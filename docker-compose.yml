@@ -1,0 +1,74 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:14.8-alpine3.18
+    environment:
+      POSTGRES_DB: "mydatabase"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "password"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    expose:
+      - "5432"
+    networks:
+      - postgres-net
+
+  pgadmin:
+    depends_on:
+      - postgres
+    image: dpage/pgadmin4:7.2
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "sample@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD: "password"
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    networks:
+      - postgres-net
+
+  maven-builder:
+    depends_on:
+      - postgres
+    image: maven:3.9.5-amazoncorretto-17
+    entrypoint: >
+      /bin/bash -c "
+      cd /app &&
+      mvn clean package &&
+      cp target/ROOT.war deploy/"
+    volumes:
+      - ./src:/app/src
+      - ./pom.xml:/app/pom.xml
+      - maven-target:/app/deploy
+    networks:
+      - postgres-net
+
+  tomcat-deployer:
+    depends_on:
+      postgres:
+        condition: service_started
+      maven-builder:
+        condition: service_completed_successfully
+    image: tomcat:10-jre17
+    environment:
+      - TZ=Europe/Moscow
+      - JWT_SECRET=5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437
+    volumes:
+      - maven-target:/usr/local/tomcat/webapps
+    ports:
+      - "8080:8080"
+    networks:
+      - postgres-net
+
+volumes:
+  postgres-data:
+  pgadmin-data:
+  maven-target:
+
+
+networks:
+  postgres-net:
+    driver: bridge
