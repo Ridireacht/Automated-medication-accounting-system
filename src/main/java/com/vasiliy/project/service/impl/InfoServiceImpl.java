@@ -39,19 +39,36 @@ public class InfoServiceImpl implements InfoService {
   @Override
   @Transactional
   public Boolean addCategory(CategoryDTO categoryDTO) {
-    return null;
+    Category category = categoryMapper.mapDTOtoCategory(categoryDTO);
+    categoryRepository.save(category);
+
+    return true;
   }
 
   @Override
   @Transactional
   public Boolean modifyCategory(Long categoryId, CategoryDTO categoryDTO) {
-    return null;
+    if (categoryRepository.existsById(categoryId)) {
+      Category category = categoryMapper.mapDTOtoCategory(categoryDTO);
+      category.setId(categoryId);
+
+      categoryRepository.save(category);
+
+      return true;
+    }
+
+    return false;
   }
 
   @Override
   @Transactional
   public Boolean deleteCategory(Long categoryId) {
-    return null;
+    if (categoryRepository.existsById(categoryId)) {
+      categoryRepository.deleteById(categoryId);
+      return true;
+    }
+
+    return false;
   }
 
   @Override
