@@ -3,6 +3,7 @@ package com.vasiliy.project.service.impl;
 import com.vasiliy.project.dto.CategoryDTO;
 import com.vasiliy.project.dto.ProductDTO;
 import com.vasiliy.project.dto.SupplierDTO;
+import com.vasiliy.project.entity.info.Category;
 import com.vasiliy.project.entity.info.Product;
 import com.vasiliy.project.entity.info.Supplier;
 import com.vasiliy.project.mapper.CategoryMapper;
@@ -31,8 +32,8 @@ public class InfoServiceImpl implements InfoService {
 
 
   @Override
-  public List<Product> getAllCategories() {
-    return null;
+  public List<Category> getAllCategories() {
+    return categoryRepository.findAll();
   }
 
   @Override
@@ -55,7 +56,7 @@ public class InfoServiceImpl implements InfoService {
 
   @Override
   public List<Product> getAllProducts() {
-    return null;
+    return productRepository.findAll();
   }
 
   @Override
@@ -78,7 +79,7 @@ public class InfoServiceImpl implements InfoService {
 
   @Override
   public List<Supplier> getAllSuppliers() {
-    return null;
+    return supplierRepository.findAll();
   }
 
   @Override
