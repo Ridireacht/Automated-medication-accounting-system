@@ -1,1 +1,19 @@
 databaseChangeLog:
+  - changeSet:
+      id: create_table_categories
+      author: Vasiliy
+      changes:
+        - createTable:
+            tableName: categories
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false

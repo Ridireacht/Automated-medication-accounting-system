@@ -2,10 +2,39 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Пример Thymeleaf</title>
+  <title>Список категорий</title>
+  <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
-<h1 th:text="${pageTitle}"></h1>
-<p th:text="${message}"></p>
+<h1>Список категорий</h1>
+<table>
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Название</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="category : ${categories}">
+    <td th:text="${category.id}"></td>
+    <td th:text="${category.name}"></td>
+  </tr>
+  </tbody>
+</table>
 </body>
 </html>
