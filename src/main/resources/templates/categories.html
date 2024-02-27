@@ -4,29 +4,34 @@
   <meta charset="UTF-8">
   <title>Список категорий</title>
   <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
 
-        th, td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
+    th, td {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
 
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
+    th {
+      background-color: #f2f2f2;
+      cursor: pointer;
+    }
+
+    th:hover {
+      background-color: #ddd;
+    }
+  </style>
 </head>
 <body>
 <h1>Список категорий</h1>
-<table>
+<table id="category-table">
   <thead>
   <tr>
-    <th>ID</th>
-    <th>Название</th>
+    <th onclick="sortTable(0)">ID</th>
+    <th onclick="sortTable(1)">Название</th>
   </tr>
   </thead>
   <tbody>
@@ -36,5 +41,30 @@
   </tr>
   </tbody>
 </table>
+
+<script>
+  function sortTable(columnIndex) {
+    var table, rows, switching, i, x, y, shouldSwitch;
+    table = document.getElementById("category-table");
+    switching = true;
+    while (switching) {
+      switching = false;
+      rows = table.rows;
+      for (i = 1; i < (rows.length - 1); i++) {
+        shouldSwitch = false;
+        x = rows[i].getElementsByTagName("td")[columnIndex];
+        y = rows[i + 1].getElementsByTagName("td")[columnIndex];
+        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+          shouldSwitch = true;
+          break;
+        }
+      }
+      if (shouldSwitch) {
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
+      }
+    }
+  }
+</script>
 </body>
 </html>
