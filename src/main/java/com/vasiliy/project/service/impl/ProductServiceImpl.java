@@ -1,6 +1,7 @@
 package com.vasiliy.project.service.impl;
 
 import com.vasiliy.project.dto.ProductDTO;
+import com.vasiliy.project.entity.info.Category;
 import com.vasiliy.project.entity.info.Product;
 import com.vasiliy.project.mapper.ProductMapper;
 import com.vasiliy.project.repository.ProductRepository;
@@ -27,18 +28,35 @@ public class ProductServiceImpl implements ProductService {
   @Override
   @Transactional
   public Boolean addProduct(ProductDTO productDTO) {
-    return null;
+    Product product = productMapper.mapDTOtoProduct(productDTO);
+    productRepository.save(product);
+
+    return true;
   }
 
   @Override
   @Transactional
   public Boolean modifyProduct(Long productId, ProductDTO productDTO) {
-    return null;
+    if (productRepository.existsById(productId)) {
+      Product product = productMapper.mapDTOtoProduct(productDTO);
+      product.setId(productId);
+
+      productRepository.save(product);
+
+      return true;
+    }
+
+    return false;
   }
 
   @Override
   @Transactional
   public Boolean deleteProduct(Long productId) {
-    return null;
+    if (productRepository.existsById(productId)) {
+      productRepository.deleteById(productId);
+      return true;
+    }
+
+    return false;
   }
 }
