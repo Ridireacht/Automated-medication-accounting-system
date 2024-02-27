@@ -36,6 +36,6 @@ public class OutflowEntry {
 
   private Reason reason;
 
-  @Column(name = "time_of_operation")
-  private LocalDateTime timeOfOperation;
+  @Column(name = "disposed_at")
+  private LocalDateTime disposedAt;
 }
