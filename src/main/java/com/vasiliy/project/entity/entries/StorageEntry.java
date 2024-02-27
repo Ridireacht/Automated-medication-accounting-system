@@ -31,6 +31,9 @@ public class StorageEntry {
 
   private Long quantity;
 
+  @Column(name = "purchase_price")
+  private Double purchasePrice;
+
   private Status status;
 
   @Column(name = "arrived_at")
