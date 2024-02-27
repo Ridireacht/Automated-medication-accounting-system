@@ -17,3 +17,25 @@ databaseChangeLog:
                   type: VARCHAR(255)
                   constraints:
                     nullable: false
+  - changeSet:
+      id: 2
+      author: Vasiliy
+      changes:
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: id
+                  value: 1
+              - column:
+                  name: name
+                  value: "Sample 1"
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: id
+                  value: 2
+              - column:
+                  name: name
+                  value: "Sample 2"
