@@ -44,41 +44,47 @@
 
 <script>
   function enableEdit(element) {
-    element.setAttribute('contenteditable', true);
-    element.focus();
-    var oldValue = element.textContent;
+    if (!element.hasAttribute('contenteditable')) {
+      element.setAttribute('contenteditable', true);
+      element.focus();
+      var oldValue = element.textContent;
 
-    element.addEventListener('blur', function () {
-      var categoryId = element.parentElement.querySelector('td:first-child').textContent;
-      var newValue = element.textContent.trim();
-      var requestBody = {
-        name: newValue
-      };
+      function onBlurHandler() {
+        var categoryId = element.parentElement.querySelector('td:first-child').textContent;
+        var newValue = element.textContent.trim();
+        var requestBody = {
+          name: newValue
+        };
 
-      fetch('/categories/' + categoryId, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(requestBody)
-      })
-      .then(response => {
-        if (!response.ok) {
-          return response.json().then(errorData => {
-            throw new Error(errorData.message);
-          });
-        }
-        return response.json();
-      })
-      .then(data => {
-        element.removeAttribute('contenteditable');
-      })
-      .catch(error => {
-        alert('Ошибка обновления категории: ' + error.message);
-        element.textContent = oldValue;
-      });
-    });
+        fetch('/categories/' + categoryId, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(requestBody)
+        })
+        .then(response => {
+          if (!response.ok) {
+            return response.json().then(errorData => {
+              throw new Error(errorData.message);
+            });
+          }
+          return response.json();
+        })
+        .then(data => {
+          element.removeAttribute('contenteditable');
+          element.removeEventListener('blur', onBlurHandler);
+        })
+        .catch(error => {
+          alert('Ошибка обновления категории: ' + error.message);
+          element.textContent = oldValue;
+        });
+      }
+
+      element.addEventListener('blur', onBlurHandler);
+    }
   }
+
 
   function sortTable(n) {
     var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
