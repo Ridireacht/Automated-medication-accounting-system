@@ -8,6 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -23,10 +25,12 @@ public class StorageEntry {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  // Прописать связь
+  @ManyToOne
+  @JoinColumn(name = "product_id")
   private Product product;
 
-  // Прописать связь
+  @ManyToOne
+  @JoinColumn(name = "supplier_id")
   private Supplier supplier;
 
   private Long quantity;
