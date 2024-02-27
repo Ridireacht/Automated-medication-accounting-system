@@ -37,12 +37,49 @@
   <tbody>
   <tr th:each="category : ${categories}">
     <td th:text="${category.id}"></td>
-    <td th:text="${category.name}"></td>
+    <td th:text="${category.name}" ondblclick="enableEdit(this)"></td>
   </tr>
   </tbody>
 </table>
 
 <script>
+  function enableEdit(element) {
+    element.setAttribute('contenteditable', true);
+    element.focus();
+    var oldValue = element.textContent;
+
+    element.addEventListener('blur', function () {
+      var categoryId = element.parentElement.querySelector('td:first-child').textContent;
+      var newValue = element.textContent.trim();
+      var requestBody = {
+        name: newValue
+      };
+
+      fetch('/categories/' + categoryId, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      })
+      .then(response => {
+        if (!response.ok) {
+          return response.json().then(errorData => {
+            throw new Error(errorData.message);
+          });
+        }
+        return response.json();
+      })
+      .then(data => {
+        element.removeAttribute('contenteditable');
+      })
+      .catch(error => {
+        alert('Ошибка обновления категории: ' + error.message);
+        element.textContent = oldValue;
+      });
+    });
+  }
+
   function sortTable(n) {
     var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
     table = document.getElementById("category-table");
