@@ -1,4 +1,4 @@
-package com.vasiliy.project.entity;
+package com.vasiliy.project.entity.enums;
 
 public enum Reason {
   SOLD,

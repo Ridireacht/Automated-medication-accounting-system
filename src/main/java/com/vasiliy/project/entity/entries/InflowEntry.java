@@ -1,5 +1,7 @@
-package com.vasiliy.project.entity;
+package com.vasiliy.project.entity.entries;
 
+import com.vasiliy.project.entity.info.Product;
+import com.vasiliy.project.entity.info.Supplier;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,8 +15,8 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "outflow_records")
-public class OutflowEntry {
+@Table(name = "inflow_records")
+public class InflowEntry {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,11 +30,9 @@ public class OutflowEntry {
 
   private Long quantity;
 
-  @Column(name = "sale_price")
-  private Double salePrice;
-
-  private Reason reason;
+  @Column(name = "purchase_price")
+  private Double purchasePrice;
 
   @Column(name = "time_of_operation")
-  private LocalDateTime timeOfOperation;
+  private LocalDateTime time;
 }

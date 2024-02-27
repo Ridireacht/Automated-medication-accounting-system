@@ -1,4 +1,4 @@
-package com.vasiliy.project.entity;
+package com.vasiliy.project.entity.info;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

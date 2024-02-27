@@ -1,4 +1,4 @@
-package com.vasiliy.project.entity;
+package com.vasiliy.project.entity.info;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,18 +12,20 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "products")
-public class Product {
+@Table(name = "suppliers")
+public class Supplier {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   private String name;
+  private String representative;
 
-  @Column(name = "unit_of_measure")
-  private String unitOfMeasure;
+  @Column(name = "phone_number")
+  private String phoneNumber;
 
-  // Прописать связь
-  private Category category;
+  private String country;
+  private String city;
+  private String address;
 }
