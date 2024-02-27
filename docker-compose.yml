@@ -55,7 +55,6 @@ services:
     image: tomcat:10-jre17
     environment:
       - TZ=Europe/Moscow
-      - JWT_SECRET=5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437
     volumes:
       - maven-target:/usr/local/tomcat/webapps
     ports:
