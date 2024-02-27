@@ -27,7 +27,7 @@ public class SupplierServiceImpl implements SupplierService {
 
   @Override
   @Transactional
-  public Boolean addSupplier(ProductDTO productDTO) {
+  public Boolean addSupplier(SupplierDTO supplierDTO) {
     return null;
   }
 

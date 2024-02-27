@@ -8,7 +8,7 @@ import java.util.List;
 public interface SupplierService {
   List<Supplier> getAllSuppliers();
 
-  Boolean addSupplier(ProductDTO productDTO);
+  Boolean addSupplier(SupplierDTO supplierDTO);
 
   Boolean modifySupplier(Long supplierId, SupplierDTO supplierDTO);
 
