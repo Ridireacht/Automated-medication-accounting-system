@@ -28,8 +28,11 @@ public class OutflowEntry {
 
   private Long quantity;
 
-  @Column(name = "time_of_operation")
-  private LocalDateTime timeOfOperation;
+  @Column(name = "sale_price")
+  private Double salePrice;
 
   private Reason reason;
+
+  @Column(name = "time_of_operation")
+  private LocalDateTime timeOfOperation;
 }

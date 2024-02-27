@@ -28,6 +28,9 @@ public class InflowEntry {
 
   private Long quantity;
 
+  @Column(name = "purchase_price")
+  private Double purchasePrice;
+
   @Column(name = "time_of_operation")
   private LocalDateTime time;
 }
