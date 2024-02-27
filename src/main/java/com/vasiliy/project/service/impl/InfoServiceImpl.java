@@ -5,6 +5,9 @@ import com.vasiliy.project.dto.ProductDTO;
 import com.vasiliy.project.dto.SupplierDTO;
 import com.vasiliy.project.entity.info.Product;
 import com.vasiliy.project.entity.info.Supplier;
+import com.vasiliy.project.mapper.CategoryMapper;
+import com.vasiliy.project.mapper.ProductMapper;
+import com.vasiliy.project.mapper.SupplierMapper;
 import com.vasiliy.project.repository.CategoryRepository;
 import com.vasiliy.project.repository.ProductRepository;
 import com.vasiliy.project.repository.SupplierRepository;
@@ -21,6 +24,10 @@ public class InfoServiceImpl implements InfoService {
   private final CategoryRepository categoryRepository;
   private final ProductRepository productRepository;
   private final SupplierRepository supplierRepository;
+
+  private final CategoryMapper categoryMapper;
+  private final ProductMapper productMapper;
+  private final SupplierMapper supplierMapper;
 
 
   @Override
