@@ -5,12 +5,15 @@ import com.vasiliy.project.entity.enums.Status;
 import com.vasiliy.project.entity.info.Supplier;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +22,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "storage_records")
-public class StorageEntry {
+public class StorageEntry implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
