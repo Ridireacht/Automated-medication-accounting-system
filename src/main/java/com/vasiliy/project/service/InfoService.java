@@ -9,27 +9,27 @@ import java.util.List;
 
 public interface InfoService {
 
-  public List<Product> getAllCategories();
+  List<Product> getAllCategories();
 
-  public Boolean addCategory(CategoryDTO categoryDTO);
+  Boolean addCategory(CategoryDTO categoryDTO);
 
-  public Boolean modifyCategory(Long categoryId, CategoryDTO categoryDTO);
+  Boolean modifyCategory(Long categoryId, CategoryDTO categoryDTO);
 
-  public Boolean deleteCategory(Long categoryId);
+  Boolean deleteCategory(Long categoryId);
 
-  public List<Product> getAllProducts();
+  List<Product> getAllProducts();
 
-  public Boolean addProduct(ProductDTO productDTO);
+  Boolean addProduct(ProductDTO productDTO);
 
-  public Boolean modifyProduct(Long productId, ProductDTO productDTO);
+  Boolean modifyProduct(Long productId, ProductDTO productDTO);
 
-  public Boolean deleteProduct(Long productId);
+  Boolean deleteProduct(Long productId);
 
-  public List<Supplier> getAllSuppliers();
+  List<Supplier> getAllSuppliers();
 
-  public Boolean addSupplier(ProductDTO productDTO);
+  Boolean addSupplier(ProductDTO productDTO);
 
-  public Boolean modifySupplier(Long supplierId, SupplierDTO supplierDTO);
+  Boolean modifySupplier(Long supplierId, SupplierDTO supplierDTO);
 
-  public Boolean deleteSupplier(Long supplierId);
+  Boolean deleteSupplier(Long supplierId);
 }
