@@ -22,54 +22,12 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class InfoServiceImpl implements InfoService {
 
-  private final CategoryRepository categoryRepository;
   private final ProductRepository productRepository;
   private final SupplierRepository supplierRepository;
 
-  private final CategoryMapper categoryMapper;
   private final ProductMapper productMapper;
   private final SupplierMapper supplierMapper;
 
-
-  @Override
-  public List<Category> getAllCategories() {
-    return categoryRepository.findAll();
-  }
-
-  @Override
-  @Transactional
-  public Boolean addCategory(CategoryDTO categoryDTO) {
-    Category category = categoryMapper.mapDTOtoCategory(categoryDTO);
-    categoryRepository.save(category);
-
-    return true;
-  }
-
-  @Override
-  @Transactional
-  public Boolean modifyCategory(Long categoryId, CategoryDTO categoryDTO) {
-    if (categoryRepository.existsById(categoryId)) {
-      Category category = categoryMapper.mapDTOtoCategory(categoryDTO);
-      category.setId(categoryId);
-
-      categoryRepository.save(category);
-
-      return true;
-    }
-
-    return false;
-  }
-
-  @Override
-  @Transactional
-  public Boolean deleteCategory(Long categoryId) {
-    if (categoryRepository.existsById(categoryId)) {
-      categoryRepository.deleteById(categoryId);
-      return true;
-    }
-
-    return false;
-  }
 
   @Override
   public List<Product> getAllProducts() {
