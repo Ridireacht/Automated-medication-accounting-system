@@ -145,12 +145,12 @@
   <tr th:each="category : ${categories}">
     <td th:text="${category.id}"></td>
     <td th:text="${category.name}" ondblclick="enableEdit(this)"></td>
-    <td><button class="delete-button" onclick="deleteCategory(this)">Удалить</button></td>
+    <td><button class="delete-button" onclick="deleteRecord(this, '/categories/')">Удалить</button></td>
   </tr>
   </tbody>
 </table>
 
-<script>
+<script src="/js/common.js">
   document.getElementById("add-category-form").addEventListener("submit", function(event) {
     event.preventDefault();
 
@@ -222,30 +222,6 @@
       }
 
       element.addEventListener('blur', onBlurHandler);
-    }
-  }
-
-
-  function deleteCategory(button) {
-    if (confirm('Вы уверены, что хотите удалить эту запись?')) {
-      var row = button.closest('tr');
-      var categoryId = row.querySelector('td:first-child').textContent;
-
-      fetch('/categories/' + categoryId, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Ошибка удаления категории');
-        }
-        row.remove();
-      })
-      .catch(error => {
-        alert('Ошибка удаления категории: ' + error.message);
-      });
     }
   }
 
