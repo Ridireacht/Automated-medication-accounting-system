@@ -14,8 +14,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @AllArgsConstructor
 @RequestMapping("/categories")
 public class CategoryController {
@@ -23,17 +24,10 @@ public class CategoryController {
   private final CategoryService categoryService;
 
 
-  @GetMapping
-  public String getCategories(Model model) {
-    model.addAttribute("categories", categoryService.getAllCategories());
-    return "categories";
-  }
-
   @PutMapping("/{id}")
-  @ResponseBody
   public ResponseEntity<?> updateCategory(@PathVariable("id") Long categoryId, @Valid @RequestBody CategoryDTO categoryDTO) {
     if(categoryService.modifyCategory(categoryId, categoryDTO)) {
-      return ResponseEntity.ok("{}");
+      return ResponseEntity.ok().build();
     } else {
       return ResponseEntity.badRequest().build();
     }
