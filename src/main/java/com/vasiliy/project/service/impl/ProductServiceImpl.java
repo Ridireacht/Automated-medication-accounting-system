@@ -1,7 +1,6 @@
 package com.vasiliy.project.service.impl;
 
 import com.vasiliy.project.dto.ProductDTO;
-import com.vasiliy.project.entity.info.Category;
 import com.vasiliy.project.entity.info.Product;
 import com.vasiliy.project.mapper.ProductMapper;
 import com.vasiliy.project.repository.ProductRepository;

@@ -1,12 +1,10 @@
 package com.vasiliy.project.entity.entries;
 
-import com.vasiliy.project.entity.info.Product;
 import com.vasiliy.project.entity.enums.Status;
+import com.vasiliy.project.entity.info.Product;
 import com.vasiliy.project.entity.info.Supplier;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
