@@ -1,5 +1,7 @@
 package com.vasiliy.project.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,10 +9,12 @@ import lombok.Setter;
 @Setter
 public class SupplierDTO {
 
+  @NotBlank
   private String name;
-  private String representative;
+
+  @Pattern(regexp = "^\\+?[0-9()-]*$")
   private String phoneNumber;
-  private String country;
-  private String city;
+
+  @NotBlank
   private String address;
 }

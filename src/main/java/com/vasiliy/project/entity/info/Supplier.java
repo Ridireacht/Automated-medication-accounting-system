@@ -20,12 +20,9 @@ public class Supplier {
   private Long id;
 
   private String name;
-  private String representative;
 
   @Column(name = "phone_number")
   private String phoneNumber;
 
-  private String country;
-  private String city;
   private String address;
 }
