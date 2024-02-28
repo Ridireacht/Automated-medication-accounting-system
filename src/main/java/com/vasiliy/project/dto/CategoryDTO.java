@@ -1,6 +1,6 @@
 package com.vasiliy.project.dto;
 
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 public class CategoryDTO {
 
-  @Size(min = 7, message = "Название категории должно содержать минимум 7 символов")
+  @NotBlank
   private String name;
 }
