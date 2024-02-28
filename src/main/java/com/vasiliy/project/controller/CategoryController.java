@@ -23,7 +23,7 @@ public class CategoryController {
 
 
   @PostMapping
-  public ResponseEntity<String> addCategory(@Valid @RequestBody CategoryDTO categoryDTO) {
+  public ResponseEntity<String> addCategory(@RequestBody CategoryDTO categoryDTO) {
     if (categoryDTO.getName().isBlank()) {
       throw new CustomValidationException("название не может быть пустым");
     }

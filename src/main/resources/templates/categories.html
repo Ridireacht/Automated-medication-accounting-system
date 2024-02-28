@@ -11,12 +11,12 @@
       margin-bottom: 50px;
     }
 
-    .add-category-form {
+    .add-form {
       font-family: Arial, sans-serif;
       font-size: 14px;
     }
 
-    .add-category-form h2 {
+    .add-form h2 {
       font-size: 20px;
       color: #666666;
       margin-bottom: 30px;
@@ -62,7 +62,7 @@
       background-color: #ff1a1a;
     }
 
-    .add-category-form {
+    .add-form {
       margin-top: 20px;
       padding: 20px;
       border: 1px solid #dddddd;
@@ -70,11 +70,11 @@
       background-color: #f9f9f9;
     }
 
-    .add-category-form label {
+    .add-form label {
       font-weight: bold;
     }
 
-    .add-category-form input[type="text"] {
+    .add-form input[type="text"] {
       width: 100%;
       padding: 8px;
       margin-top: 8px;
@@ -84,7 +84,7 @@
       box-sizing: border-box;
     }
 
-    .add-category-form button[type="submit"] {
+    .add-form button[type="submit"] {
       background-color: #4caf50;
       color: white;
       padding: 6px 12px;
@@ -96,11 +96,11 @@
       font-size: 14px;
     }
 
-    .add-category-form button[type="submit"]:hover {
+    .add-form button[type="submit"]:hover {
       background-color: #45a049;
     }
 
-    .add-category-form button[type="submit"]:active {
+    .add-form button[type="submit"]:active {
       background-color: #3e8e41;
     }
 
@@ -116,11 +116,11 @@
 <body>
 <h1 style="text-align: center;">Справочник категорий товаров</h1>
 
-<div class="add-category-form">
+<div class="add-form">
   <h2>Добавить новую категорию</h2>
-  <form id="add-category-form">
+  <form id="add-form">
     <label for="category-name">Название категории</label><br>
-    <input type="text" id="category-name" name="categoryName"><br>
+    <input type="text" id="category-name"><br>
     <button type="submit">Добавить</button>
   </form>
 </div>
@@ -133,7 +133,7 @@
 
 <div style="margin-top: 20px;"></div>
 
-<table id="category-table">
+<table id="records-table">
   <thead>
   <tr>
     <th onclick="sortTable(0)">ID</th>
@@ -144,14 +144,15 @@
   <tbody>
   <tr th:each="category : ${categories}">
     <td th:text="${category.id}"></td>
-    <td th:text="${category.name}" ondblclick="enableEdit(this)"></td>
+    <td th:text="${category.name}" ondblclick="enableEdit(this, '/categories/', 'name')"></td>
     <td><button class="delete-button" onclick="deleteRecord(this, '/categories/')">Удалить</button></td>
   </tr>
   </tbody>
 </table>
 
-<script src="/js/common.js">
-  document.getElementById("add-category-form").addEventListener("submit", function(event) {
+<script src="/js/common.js"></script>
+<script>
+  document.getElementById("add-form").addEventListener("submit", function(event) {
     event.preventDefault();
 
     var categoryName = document.getElementById("category-name").value.trim();
@@ -160,128 +161,8 @@
       name: categoryName
     };
 
-    fetch('/categories', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(requestBody)
-    })
-    .then(response => {
-      if (!response.ok) {
-        return response.json().then(errorData => {
-          var errorMessage = errorData.message;
-          throw new Error(errorMessage);
-        });
-      }
-      window.location.reload();
-    })
-    .catch(error => {
-      alert('Ошибка добавления категории: ' + error.message);
-    });
+    sendPostRequest(requestBody, '/categories');
   });
-
-
-  function enableEdit(element) {
-    if (!element.hasAttribute('contenteditable')) {
-      element.setAttribute('contenteditable', true);
-      element.focus();
-      var oldValue = element.textContent;
-
-      function onBlurHandler() {
-        var categoryId = element.parentElement.querySelector('td:first-child').textContent;
-        var newValue = element.textContent.trim();
-        var requestBody = {
-          name: newValue
-        };
-
-        fetch('/categories/' + categoryId, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(requestBody)
-        })
-        .then(response => {
-          if (!response.ok) {
-            return response.json().then(errorData => {
-              var errorMessage = errorData.message;
-              throw new Error(errorMessage);
-            });
-          }
-          return response.json();
-        })
-        .then(data => {
-          element.removeAttribute('contenteditable');
-          element.removeEventListener('blur', onBlurHandler);
-        })
-        .catch(error => {
-          alert('Ошибка обновления категории: ' + error.message);
-          element.textContent = oldValue;
-        });
-      }
-
-      element.addEventListener('blur', onBlurHandler);
-    }
-  }
-
-
-  function searchTable() {
-    var input, filter, table, tr, td, i, txtValue;
-    input = document.getElementById("searchInput");
-    filter = input.value.toUpperCase();
-    table = document.getElementById("category-table");
-    tr = table.getElementsByTagName("tr");
-    for (i = 0; i < tr.length; i++) {
-      td = tr[i].getElementsByTagName("td")[1];
-      if (td) {
-        txtValue = td.textContent || td.innerText;
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-          tr[i].style.display = "";
-        } else {
-          tr[i].style.display = "none";
-        }
-      }
-    }
-  }
-
-
-  function sortTable(n) {
-    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-    table = document.getElementById("category-table");
-    switching = true;
-    dir = "asc";
-    while (switching) {
-      switching = false;
-      rows = table.rows;
-      for (i = 1; i < (rows.length - 1); i++) {
-        shouldSwitch = false;
-        x = rows[i].getElementsByTagName("TD")[n];
-        y = rows[i + 1].getElementsByTagName("TD")[n];
-        if (dir == "asc") {
-          if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-            shouldSwitch = true;
-            break;
-          }
-        } else if (dir == "desc") {
-          if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-            shouldSwitch = true;
-            break;
-          }
-        }
-      }
-      if (shouldSwitch) {
-        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-        switching = true;
-        switchcount ++;
-      } else {
-        if (switchcount == 0 && dir == "asc") {
-          dir = "desc";
-          switching = true;
-        }
-      }
-    }
-  }
 </script>
 </body>
 </html>
