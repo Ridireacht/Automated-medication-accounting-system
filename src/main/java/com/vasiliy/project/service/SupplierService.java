@@ -9,7 +9,7 @@ public interface SupplierService {
 
   Boolean addSupplier(SupplierDTO supplierDTO);
 
-  Boolean modifySupplier(Long supplierId, SupplierDTO supplierDTO);
+  Boolean updateSupplier(Long supplierId, SupplierDTO supplierDTO);
 
   Boolean deleteSupplier(Long supplierId);
 }

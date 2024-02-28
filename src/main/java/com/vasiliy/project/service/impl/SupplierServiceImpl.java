@@ -35,7 +35,7 @@ public class SupplierServiceImpl implements SupplierService {
 
   @Override
   @Transactional
-  public Boolean modifySupplier(Long supplierId, SupplierDTO supplierDTO) {
+  public Boolean updateSupplier(Long supplierId, SupplierDTO supplierDTO) {
     if (supplierRepository.existsById(supplierId)) {
       Supplier supplier = supplierMapper.mapDTOtoSupplier(supplierDTO);
       supplier.setId(supplierId);

@@ -9,7 +9,7 @@ public interface CategoryService {
 
   Boolean addCategory(CategoryDTO categoryDTO);
 
-  Boolean modifyCategory(Long categoryId, CategoryDTO categoryDTO);
+  Boolean updateCategory(Long categoryId, CategoryDTO categoryDTO);
 
   Boolean deleteCategory(Long categoryId);
 }

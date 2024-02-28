@@ -9,7 +9,7 @@ public interface ProductService {
 
   Boolean addProduct(ProductDTO productDTO);
 
-  Boolean modifyProduct(Long productId, ProductDTO productDTO);
+  Boolean updateProduct(Long productId, ProductDTO productDTO);
 
   Boolean deleteProduct(Long productId);
 }

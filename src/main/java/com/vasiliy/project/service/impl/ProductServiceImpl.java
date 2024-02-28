@@ -35,7 +35,7 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   @Transactional
-  public Boolean modifyProduct(Long productId, ProductDTO productDTO) {
+  public Boolean updateProduct(Long productId, ProductDTO productDTO) {
     if (productRepository.existsById(productId)) {
       Product product = productMapper.mapDTOtoProduct(productDTO);
       product.setId(productId);

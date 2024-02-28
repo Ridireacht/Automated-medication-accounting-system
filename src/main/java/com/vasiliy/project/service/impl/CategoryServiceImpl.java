@@ -35,7 +35,7 @@ public class CategoryServiceImpl implements CategoryService {
 
   @Override
   @Transactional
-  public Boolean modifyCategory(Long categoryId, CategoryDTO categoryDTO) {
+  public Boolean updateCategory(Long categoryId, CategoryDTO categoryDTO) {
     if (categoryRepository.existsById(categoryId)) {
       Category category = categoryMapper.mapDTOtoCategory(categoryDTO);
       category.setId(categoryId);
