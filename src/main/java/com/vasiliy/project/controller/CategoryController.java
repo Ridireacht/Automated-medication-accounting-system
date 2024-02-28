@@ -20,11 +20,8 @@ public class CategoryController {
 
 
   @PutMapping("/{id}")
-  public ResponseEntity<?> updateCategory(@PathVariable("id") Long categoryId, @Valid @RequestBody CategoryDTO categoryDTO) {
-    if(categoryService.modifyCategory(categoryId, categoryDTO)) {
-      return ResponseEntity.ok().build();
-    } else {
-      return ResponseEntity.badRequest().build();
-    }
+  public ResponseEntity<String> updateCategory(@PathVariable("id") Long categoryId, @Valid @RequestBody CategoryDTO categoryDTO) {
+    categoryService.modifyCategory(categoryId, categoryDTO);
+    return ResponseEntity.ok().body("{}");
   }
 }

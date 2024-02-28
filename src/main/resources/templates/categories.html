@@ -66,7 +66,8 @@
         .then(response => {
           if (!response.ok) {
             return response.json().then(errorData => {
-              throw new Error(errorData.message);
+              var errorMessage = Object.values(errorData.message).join(', ');
+              throw new Error(errorMessage);
             });
           }
           return response.json();
