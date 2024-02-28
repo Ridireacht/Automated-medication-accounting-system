@@ -1,6 +1,7 @@
 package com.vasiliy.project.controller;
 
 import com.vasiliy.project.dto.CategoryDTO;
+import com.vasiliy.project.exception.CustomValidationException;
 import com.vasiliy.project.service.CategoryService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -23,12 +24,20 @@ public class CategoryController {
 
   @PostMapping
   public ResponseEntity<String> addCategory(@Valid @RequestBody CategoryDTO categoryDTO) {
+    if (categoryDTO.getName().isBlank()) {
+      throw new CustomValidationException("название не может быть пустым");
+    }
+
     categoryService.addCategory(categoryDTO);
     return ResponseEntity.ok().body("{}");
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<String> updateCategory(@PathVariable("id") Long categoryId, @Valid @RequestBody CategoryDTO categoryDTO) {
+    if (categoryDTO.getName().isBlank()) {
+      throw new CustomValidationException("название не может быть пустым");
+    }
+
     categoryService.updateCategory(categoryId, categoryDTO);
     return ResponseEntity.ok().body("{}");
   }
