@@ -153,7 +153,7 @@
     <td th:text="${supplier.name}" ondblclick="enableEdit(this, 'name')"></td>
     <td th:text="${supplier.phoneNumber}" ondblclick="enableEdit(this, 'phoneNumber')"></td>
     <td th:text="${supplier.address}" ondblclick="enableEdit(this, 'address')"></td>
-    <td><button class="delete-button" onclick="deleteCategory(this)">Удалить</button></td>
+    <td><button class="delete-button" onclick="deleteSupplier(this)">Удалить</button></td>
   </tr>
   </tbody>
 </table>
@@ -172,7 +172,7 @@
       address: supplierAddress
     };
 
-    fetch('/categories', {
+    fetch('/suppliers', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -207,7 +207,7 @@
         var requestBody = {};
         requestBody[fieldName] = newValue;
 
-        fetch('/categories/' + categoryId, {
+        fetch('/suppliers/' + supplierId, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json'
@@ -238,12 +238,12 @@
   }
 
 
-  function deleteCategory(button) {
+  function deleteSupplier(button) {
     if (confirm('Вы уверены, что хотите удалить эту запись?')) {
       var row = button.closest('tr');
-      var categoryId = row.querySelector('td:first-child').textContent;
+      var supplierId = row.querySelector('td:first-child').textContent;
 
-      fetch('/categories/' + categoryId, {
+      fetch('/suppliers/' + supplierId, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
@@ -284,7 +284,7 @@
 
   function sortTable(n) {
     var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-    table = document.getElementById("category-table");
+    table = document.getElementById("supplier-table");
     switching = true;
     dir = "asc";
     while (switching) {
