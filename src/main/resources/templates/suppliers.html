@@ -182,7 +182,7 @@
     .then(response => {
       if (!response.ok) {
         return response.json().then(errorData => {
-          var errorMessage = Object.values(errorData.message).join(', ');
+          var errorMessage = errorData.message;
           throw new Error(errorMessage);
         });
       }
@@ -217,7 +217,7 @@
         .then(response => {
           if (!response.ok) {
             return response.json().then(errorData => {
-              var errorMessage = Object.values(errorData.message).join(', ');
+              var errorMessage = errorData.message;
               throw new Error(errorMessage);
             });
           }
