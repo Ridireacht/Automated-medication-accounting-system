@@ -41,10 +41,60 @@
     .delete-button:active {
       background-color: #ff1a1a;
     }
+
+    .add-category-form {
+      margin-top: 20px;
+      padding: 20px;
+      border: 1px solid #dddddd;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+    }
+
+    .add-category-form label {
+      font-weight: bold;
+    }
+
+    .add-category-form input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 8px;
+      margin-bottom: 16px;
+      border: 1px solid #cccccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    .add-category-form button[type="submit"] {
+      background-color: #4caf50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .add-category-form button[type="submit"]:hover {
+      background-color: #45a049;
+    }
+
+    .add-category-form button[type="submit"]:active {
+      background-color: #3e8e41;
+    }
   </style>
 </head>
 <body>
 <h1>Справочник категорий товаров</h1>
+
+<div class="add-category-form">
+  <h2>Добавить новую категорию</h2>
+  <form id="add-category-form">
+    <label for="category-name">Название категории:</label><br>
+    <input type="text" id="category-name" name="categoryName"><br>
+    <button type="submit">Добавить</button>
+  </form>
+</div>
+
 <table id="category-table">
   <thead>
   <tr>
@@ -63,6 +113,36 @@
 </table>
 
 <script>
+  document.getElementById("add-category-form").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    var categoryName = document.getElementById("category-name").value.trim();
+
+    var requestBody = {
+      name: categoryName
+    };
+
+    fetch('/categories', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestBody)
+    })
+    .then(response => {
+      if (!response.ok) {
+        return response.json().then(errorData => {
+          var errorMessage = Object.values(errorData.message).join(', ');
+          throw new Error(errorMessage);
+        });
+      }
+      window.location.reload();
+    })
+    .catch(error => {
+      alert('Ошибка добавления категории: ' + error.message);
+    });
+  });
+
   function enableEdit(element) {
     if (!element.hasAttribute('contenteditable')) {
       element.setAttribute('contenteditable', true);
