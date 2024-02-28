@@ -99,6 +99,14 @@
     .add-category-form button[type="submit"]:active {
       background-color: #3e8e41;
     }
+
+    #searchInput {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 300px;
+      font-size: 14px;
+    }
   </style>
 </head>
 <body>
@@ -113,7 +121,13 @@
   </form>
 </div>
 
-<div style="margin-top: 50px;"></div>
+<div style="margin-top: 60px;"></div>
+
+<div>
+  <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Поиск по названию категории...">
+</div>
+
+<div style="margin-top: 20px;"></div>
 
 <table id="category-table">
   <thead>
@@ -162,6 +176,7 @@
       alert('Ошибка добавления категории: ' + error.message);
     });
   });
+
 
   function enableEdit(element) {
     if (!element.hasAttribute('contenteditable')) {
@@ -227,6 +242,26 @@
       .catch(error => {
         alert('Ошибка удаления категории: ' + error.message);
       });
+    }
+  }
+
+
+  function searchTable() {
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("searchInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("category-table");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[1];
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
     }
   }
 
