@@ -5,6 +5,7 @@ import com.vasiliy.project.service.CategoryService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,6 +23,12 @@ public class CategoryController {
   @PutMapping("/{id}")
   public ResponseEntity<String> updateCategory(@PathVariable("id") Long categoryId, @Valid @RequestBody CategoryDTO categoryDTO) {
     categoryService.modifyCategory(categoryId, categoryDTO);
+    return ResponseEntity.ok().body("{}");
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<String> deleteCategory(@PathVariable("id") Long categoryId) {
+    categoryService.deleteCategory(categoryId);
     return ResponseEntity.ok().body("{}");
   }
 }
