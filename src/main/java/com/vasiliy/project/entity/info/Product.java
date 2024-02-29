@@ -24,7 +24,7 @@ public class Product {
 
   private String name;
 
-  @ManyToOne(cascade = CascadeType.REMOVE)
+  @ManyToOne
   @JoinColumn(name = "category_id")
   private Category category;
 
