@@ -13,6 +13,7 @@ public class ProductDTO {
   @NotBlank
   private String name;
 
+  @NotNull
   private Long categoryId;
 
   @NotBlank

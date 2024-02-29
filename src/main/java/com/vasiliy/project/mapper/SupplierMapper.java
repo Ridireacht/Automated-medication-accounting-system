@@ -10,6 +10,4 @@ import org.springframework.stereotype.Component;
 public interface SupplierMapper {
 
   Supplier mapDTOtoSupplier(SupplierDTO supplierDTO);
-
-  SupplierDTO mapSupplierToDTO(Supplier supplier);
 }

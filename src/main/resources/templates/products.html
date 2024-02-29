@@ -71,10 +71,10 @@
     event.preventDefault();
 
     var productName = document.getElementById("product-name").value.trim();
-    var productCategoryId = document.getElementById("category-id").value;
+    var productCategoryId = document.getElementById("category-id").value.toString();
     var productUnitOfMeasure = document.getElementById("unit-of-measure").value.trim();
-    var productExpirationDays = document.getElementById("expiration-days").value;
-    var productIsVital = document.getElementById("is-vital").value;
+    var productExpirationDays = document.getElementById("expiration-days").value.toString();
+    var productIsVital = document.getElementById("is-vital").checked.toString();
 
     var requestBody = {
       name: productName,

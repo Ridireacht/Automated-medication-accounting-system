@@ -10,6 +10,4 @@ import org.springframework.stereotype.Component;
 public interface CategoryMapper {
 
   Category mapDTOtoCategory(CategoryDTO categoryDTO);
-
-  CategoryDTO mapCategoryToDTO(Category category);
 }
