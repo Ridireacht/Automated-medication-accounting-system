@@ -99,11 +99,12 @@ th:hover {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
+  font-size: 14px;
   margin-top: 100px;
   cursor: pointer;
   border-radius: 5px;
   transition: background-color 0.3s;
+  font-family: Arial, sans-serif;
 }
 
 .home-button:hover {
