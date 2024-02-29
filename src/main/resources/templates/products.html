@@ -53,14 +53,14 @@
     <td th:text="${product.id}"></td>
     <td th:text="${product.name}" ondblclick="enableEdit(this, '/products/', 'name')"></td>
     <td>
-      <select>
+      <select onchange="updateSelected(this, '/products/', 'categoryId')">
         <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}" th:selected="${category.id eq product.category.id}"></option>
       </select>
     </td>
     <td th:text="${product.unitOfMeasure}" ondblclick="enableEdit(this, '/products/', 'unitOfMeasure')"></td>
     <td th:text="${product.expirationDays}" ondblclick="enableEdit(this, '/products/', 'expirationDays')"></td>
     <td>
-      <select>
+      <select onchange="updateSelected(this, '/products/', 'isVital')">
         <option th:value="true" th:text="Да" th:selected="${product.isVital}"></option>
         <option th:value="false" th:text="Нет" th:selected="${!product.isVital}"></option>
       </select>

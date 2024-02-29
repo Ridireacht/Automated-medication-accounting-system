@@ -163,3 +163,34 @@ function enableEdit(element, url, fieldName) {
     element.addEventListener('blur', onBlurHandler);
   }
 }
+
+
+function updateSelected(element, url, fieldName) {
+      var recordId = element.parentElement.parentElement.querySelector('td:first-child').textContent;
+      var newValue = element.value.toString();
+
+      var requestBody = {
+        type: fieldName,
+        value: newValue
+      };
+
+      fetch(url + recordId, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      })
+      .then(response => {
+        if (!response.ok) {
+          return response.json().then(errorData => {
+            var errorMessage = errorData.message;
+            throw new Error(errorMessage);
+          });
+        }
+      })
+      .catch(error => {
+        alert('Ошибка обновления поля: ' + error.message);
+        element.textContent = oldValue;
+      });
+}
