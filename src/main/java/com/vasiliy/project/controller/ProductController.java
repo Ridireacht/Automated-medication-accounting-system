@@ -40,6 +40,14 @@ public class ProductController {
       throw new CustomValidationException("поле не должно быть пустым");
     }
 
+    if (updateRequest.getType().equals("expirationDays")) {
+      try {
+        Long.parseLong(updateRequest.getValue());
+      } catch (NumberFormatException e) {
+        throw new CustomValidationException("введённое значение не является числовым");
+      }
+    }
+
     productService.updateProduct(productId, updateRequest);
     return ResponseEntity.ok().body("{}");
   }

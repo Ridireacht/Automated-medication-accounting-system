@@ -51,11 +51,11 @@
   <tbody>
   <tr th:each="product : ${products}">
     <td th:text="${product.id}"></td>
-    <td th:text="${product.name}"></td>
+    <td th:text="${product.name}" ondblclick="enableEdit(this, '/products/', 'name')"></td>
     <td th:text="${product.category.id}"></td>
-    <td th:text="${product.unitOfMeasure}"></td>
-    <td th:text="${product.expirationDays}"></td>
-    <td th:text="${product.isVital}"></td>
+    <td th:text="${product.unitOfMeasure}" ondblclick="enableEdit(this, '/products/', 'unitOfMeasure')"></td>
+    <td th:text="${product.expirationDays}" ondblclick="enableEdit(this, '/products/', 'expirationDays')"></td>
+    <td th:text="${product.isVital} ? 'Да' : 'Нет'"></td>
     <td><button class="delete-button" onclick="deleteRecord(this, '/products/')">Удалить</button></td>
   </tr>
   </tbody>
