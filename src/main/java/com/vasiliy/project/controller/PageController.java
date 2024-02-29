@@ -15,6 +15,11 @@ public class PageController {
   private final SupplierService supplierService;
 
 
+  @GetMapping("/home")
+  public String getHome() {
+    return "home";
+  }
+
   @GetMapping("/categories")
   public String getCategories(Model model) {
     model.addAttribute("categories", categoryService.getAllCategories());
