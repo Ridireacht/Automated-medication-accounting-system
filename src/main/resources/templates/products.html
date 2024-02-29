@@ -14,16 +14,16 @@
   <form id="add-form">
     <label for="product-name">Название товара</label><br>
     <input type="text" id="product-name"><br>
-    <label for="category-id">ID категории товара</label><br>
+    <label for="category-id">Категория товара</label><br>
     <select id="category-id">
       <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
-    </select>
+    </select><br><br>
     <label for="unit-of-measure">Название единицы измерения товара</label><br>
     <input type="text" id="unit-of-measure"><br>
     <label for="expiration-days">Срок годности товара (в днях)</label><br>
     <input type="text" id="expiration-days"><br>
-    <label for="is-vital">Входит ли товар в перечень ЖНВЛП?</label><br>
-    <input type="checkbox" id="is-vital"><br>
+    <label for="is-vital">Входит ли товар в перечень ЖНВЛП?</label>
+    <input type="checkbox" id="is-vital" style="transform: scale(1.1);"><br><br><br>
     <button type="submit">Добавить</button>
   </form>
 </div>
