@@ -41,7 +41,7 @@
   <tr>
     <th onclick="sortTable(0)">ID</th>
     <th onclick="sortTable(1)">Название</th>
-    <th onclick="sortTable(2)">ID категории</th>
+    <th onclick="sortTable(2)">Категория</th>
     <th onclick="sortTable(3)">Единица измерения</th>
     <th onclick="sortTable(4)">Срок годности (дни)</th>
     <th onclick="sortTable(5)">ЖНВЛП?</th>
@@ -52,10 +52,19 @@
   <tr th:each="product : ${products}">
     <td th:text="${product.id}"></td>
     <td th:text="${product.name}" ondblclick="enableEdit(this, '/products/', 'name')"></td>
-    <td th:text="${product.category.id}"></td>
+    <td>
+      <select>
+        <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}" th:selected="${category.id eq product.category.id}"></option>
+      </select>
+    </td>
     <td th:text="${product.unitOfMeasure}" ondblclick="enableEdit(this, '/products/', 'unitOfMeasure')"></td>
     <td th:text="${product.expirationDays}" ondblclick="enableEdit(this, '/products/', 'expirationDays')"></td>
-    <td th:text="${product.isVital} ? 'Да' : 'Нет'"></td>
+    <td>
+      <select>
+        <option th:value="true" th:text="Да" th:selected="${product.isVital}"></option>
+        <option th:value="false" th:text="Нет" th:selected="${!product.isVital}"></option>
+      </select>
+    </td>
     <td><button class="delete-button" onclick="deleteRecord(this, '/products/')">Удалить</button></td>
   </tr>
   </tbody>
