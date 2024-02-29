@@ -130,7 +130,8 @@ function enableEdit(element, url, fieldName) {
       var newValue = element.textContent.trim();
 
       var requestBody = {};
-      requestBody[fieldName] = newValue;
+      requestBody[type] = fieldName;
+      requestBody[value] = newValue;
 
       fetch(url + recordId, {
         method: 'PUT',
