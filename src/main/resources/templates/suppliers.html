@@ -3,122 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <title>Справочник поставщиков</title>
-  <style>
-    h1 {
-      font-family: Arial, sans-serif;
-      font-size: 28px;
-      color: #333333;
-      margin-bottom: 50px;
-    }
-
-    .add-supplier-form {
-      font-family: Arial, sans-serif;
-      font-size: 14px;
-    }
-
-    .add-supplier-form h2 {
-      font-size: 20px;
-      color: #666666;
-      margin-bottom: 30px;
-    }
-
-    table {
-      border-collapse: collapse;
-      width: 100%;
-    }
-
-    th, td {
-      border: 1px solid #dddddd;
-      text-align: left;
-      padding: 8px;
-    }
-
-    th {
-      background-color: #f2f2f2;
-      cursor: pointer;
-    }
-
-    th:hover {
-      background-color: #ddd;
-    }
-
-    .delete-button {
-      background-color: #ff4b5c;
-      color: #ffffff;
-      border: none;
-      border-radius: 4px;
-      padding: 6px 12px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-      font-family: Arial, sans-serif;
-      font-size: 14px;
-    }
-
-    .delete-button:hover {
-      background-color: #ff3333;
-    }
-
-    .delete-button:active {
-      background-color: #ff1a1a;
-    }
-
-    .add-supplier-form {
-      margin-top: 20px;
-      padding: 20px;
-      border: 1px solid #dddddd;
-      border-radius: 4px;
-      background-color: #f9f9f9;
-    }
-
-    .add-supplier-form label {
-      font-weight: bold;
-    }
-
-    .add-supplier-form input[type="text"] {
-      width: 100%;
-      padding: 8px;
-      margin-top: 8px;
-      margin-bottom: 16px;
-      border: 1px solid #cccccc;
-      border-radius: 4px;
-      box-sizing: border-box;
-    }
-
-    .add-supplier-form button[type="submit"] {
-      background-color: #4caf50;
-      color: white;
-      padding: 6px 12px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-      font-family: Arial, sans-serif;
-      font-size: 14px;
-    }
-
-    .add-supplier-form button[type="submit"]:hover {
-      background-color: #45a049;
-    }
-
-    .add-supplier-form button[type="submit"]:active {
-      background-color: #3e8e41;
-    }
-
-    #searchInput {
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      width: 300px;
-      font-size: 14px;
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="/css/styles.css">
 </head>
 <body>
 <h1 style="text-align: center;">Справочник поставщиков</h1>
 
-<div class="add-supplier-form">
+<div class="add-form">
   <h2>Добавить нового поставщика</h2>
-  <form id="add-supplier-form">
+  <form id="add-form">
     <label for="supplier-name">Название компании поставщика</label><br>
     <input type="text" id="supplier-name" name="supplierName"><br>
     <label for="supplier-phone-number">Телефонный номер компании поставщика</label><br>
@@ -137,7 +29,7 @@
 
 <div style="margin-top: 20px;"></div>
 
-<table id="supplier-table">
+<table id="records-table">
   <thead>
   <tr>
     <th onclick="sortTable(0)">ID</th>
@@ -150,16 +42,17 @@
   <tbody>
   <tr th:each="supplier : ${suppliers}">
     <td th:text="${supplier.id}"></td>
-    <td th:text="${supplier.name}" ondblclick="enableEdit(this, 'name')"></td>
-    <td th:text="${supplier.phoneNumber}" ondblclick="enableEdit(this, 'phoneNumber')"></td>
-    <td th:text="${supplier.address}" ondblclick="enableEdit(this, 'address')"></td>
-    <td><button class="delete-button" onclick="deleteSupplier(this)">Удалить</button></td>
+    <td th:text="${supplier.name}" ondblclick="enableEdit(this, '/suppliers/', 'name')"></td>
+    <td th:text="${supplier.phoneNumber}" ondblclick="enableEdit(this, '/suppliers/', 'phoneNumber')"></td>
+    <td th:text="${supplier.address}" ondblclick="enableEdit(this, '/suppliers/', 'address')"></td>
+    <td><button class="delete-button" onclick="deleteRecord(this, '/suppliers/')">Удалить</button></td>
   </tr>
   </tbody>
 </table>
 
+<script src="/js/common.js"></script>
 <script>
-  document.getElementById("add-supplier-form").addEventListener("submit", function(event) {
+  document.getElementById("add-form").addEventListener("submit", function(event) {
     event.preventDefault();
 
     var supplierName = document.getElementById("supplier-name").value.trim();
@@ -172,152 +65,8 @@
       address: supplierAddress
     };
 
-    fetch('/suppliers', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(requestBody)
-    })
-    .then(response => {
-      if (!response.ok) {
-        return response.json().then(errorData => {
-          var errorMessage = errorData.message;
-          throw new Error(errorMessage);
-        });
-      }
-      window.location.reload();
-    })
-    .catch(error => {
-      alert('Ошибка добавления поставщика: ' + error.message);
-    });
+    sendPostRequest(requestBody, '/suppliers');
   });
-
-
-  function enableEdit(element, fieldName) {
-    if (!element.hasAttribute('contenteditable')) {
-      element.setAttribute('contenteditable', true);
-      element.focus();
-      var oldValue = element.textContent;
-
-      function onBlurHandler() {
-        var supplierId = element.parentElement.querySelector('td:first-child').textContent;
-        var newValue = element.textContent.trim();
-
-        var requestBody = {};
-        requestBody[fieldName] = newValue;
-
-        fetch('/suppliers/' + supplierId, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(requestBody)
-        })
-        .then(response => {
-          if (!response.ok) {
-            return response.json().then(errorData => {
-              var errorMessage = errorData.message;
-              throw new Error(errorMessage);
-            });
-          }
-          return response.json();
-        })
-        .then(data => {
-          element.removeAttribute('contenteditable');
-          element.removeEventListener('blur', onBlurHandler);
-        })
-        .catch(error => {
-          alert('Ошибка обновления поставщика: ' + error.message);
-          element.textContent = oldValue;
-        });
-      }
-
-      element.addEventListener('blur', onBlurHandler);
-    }
-  }
-
-
-  function deleteSupplier(button) {
-    if (confirm('Вы уверены, что хотите удалить эту запись?')) {
-      var row = button.closest('tr');
-      var supplierId = row.querySelector('td:first-child').textContent;
-
-      fetch('/suppliers/' + supplierId, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Ошибка удаления поставщика');
-        }
-        row.remove();
-      })
-      .catch(error => {
-        alert('Ошибка удаления поставщика: ' + error.message);
-      });
-    }
-  }
-
-
-  function searchTable() {
-    var input, filter, table, tr, td, i, txtValue;
-    input = document.getElementById("searchInput");
-    filter = input.value.toUpperCase();
-    table = document.getElementById("supplier-table");
-    tr = table.getElementsByTagName("tr");
-    for (i = 0; i < tr.length; i++) {
-      td = tr[i].getElementsByTagName("td")[1];
-      if (td) {
-        txtValue = td.textContent || td.innerText;
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-          tr[i].style.display = "";
-        } else {
-          tr[i].style.display = "none";
-        }
-      }
-    }
-  }
-
-
-  function sortTable(n) {
-    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-    table = document.getElementById("supplier-table");
-    switching = true;
-    dir = "asc";
-    while (switching) {
-      switching = false;
-      rows = table.rows;
-      for (i = 1; i < (rows.length - 1); i++) {
-        shouldSwitch = false;
-        x = rows[i].getElementsByTagName("TD")[n];
-        y = rows[i + 1].getElementsByTagName("TD")[n];
-        if (dir == "asc") {
-          if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-            shouldSwitch = true;
-            break;
-          }
-        } else if (dir == "desc") {
-          if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-            shouldSwitch = true;
-            break;
-          }
-        }
-      }
-      if (shouldSwitch) {
-        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-        switching = true;
-        switchcount ++;
-      } else {
-        if (switchcount == 0 && dir == "asc") {
-          dir = "desc";
-          switching = true;
-        }
-      }
-    }
-  }
 </script>
 </body>
 </html>

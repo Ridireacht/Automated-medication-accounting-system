@@ -1,6 +1,7 @@
 package com.vasiliy.project.service.impl;
 
 import com.vasiliy.project.dto.SupplierDTO;
+import com.vasiliy.project.dto.UpdateRequest;
 import com.vasiliy.project.entity.info.Supplier;
 import com.vasiliy.project.mapper.SupplierMapper;
 import com.vasiliy.project.repository.SupplierRepository;
@@ -35,10 +36,15 @@ public class SupplierServiceImpl implements SupplierService {
 
   @Override
   @Transactional
-  public Boolean updateSupplier(Long supplierId, SupplierDTO supplierDTO) {
+  public Boolean updateSupplier(Long supplierId, UpdateRequest updateRequest) {
     if (supplierRepository.existsById(supplierId)) {
-      Supplier supplier = supplierMapper.mapDTOtoSupplier(supplierDTO);
-      supplier.setId(supplierId);
+      Supplier supplier = supplierRepository.findById(supplierId).get();
+
+      switch (updateRequest.getType()) {
+        case "name" -> supplier.setName(updateRequest.getValue());
+        case "phoneNumber" -> supplier.setPhoneNumber(updateRequest.getValue());
+        case "address" -> supplier.setAddress(updateRequest.getValue());
+      }
 
       supplierRepository.save(supplier);
 

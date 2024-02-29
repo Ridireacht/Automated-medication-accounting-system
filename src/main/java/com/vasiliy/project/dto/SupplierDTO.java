@@ -12,7 +12,7 @@ public class SupplierDTO {
   @NotBlank
   private String name;
 
-  @Pattern(regexp = "^\\+?[0-9()-]*$")
+  @Pattern(regexp = "\\+\\d{11}")
   private String phoneNumber;
 
   @NotBlank

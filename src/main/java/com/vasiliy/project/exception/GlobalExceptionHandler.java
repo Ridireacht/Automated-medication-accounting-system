@@ -27,13 +27,18 @@ public class GlobalExceptionHandler {
     BindingResult bindingResult = ex.getBindingResult();
     List<FieldError> fieldErrors = bindingResult.getFieldErrors();
 
-    StringBuilder errorMessage = new StringBuilder();
-    errorMessage.append("ошибка валидации, ");
+    StringBuilder errorBuilder = new StringBuilder();
+    errorBuilder.append("ошибка валидации, ");
     for (FieldError fieldError : fieldErrors) {
-      errorMessage.append(fieldError.getField()).append(" ");
-      errorMessage.append(fieldError.getDefaultMessage()).append("; ");
+      errorBuilder.append(fieldError.getField()).append(" ");
+
+      if (fieldError.getCode().equals("Pattern")) {
+        errorBuilder.append("не соответствует регулярному выражению").append("; ");
+      } else {
+        errorBuilder.append(fieldError.getDefaultMessage()).append("; ");
+      }
     }
 
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{ \"message\": \"" + errorMessage + "\" }");
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{ \"message\": \"" + errorBuilder + "\" }");
   }
 }
