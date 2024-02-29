@@ -2,22 +2,24 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Справочник поставщиков</title>
+  <title>Справочник товаров</title>
   <link rel="stylesheet" type="text/css" href="/css/styles.css">
 </head>
 <body>
 
-<h1 style="text-align: center;">Справочник поставщиков</h1>
+<h1 style="text-align: center;">Справочник товаров</h1>
 
 <div class="add-form">
-  <h2>Добавить нового поставщика</h2>
+  <h2>Добавить новый товар</h2>
   <form id="add-form">
-    <label for="supplier-name">Название компании поставщика</label><br>
-    <input type="text" id="supplier-name"><br>
-    <label for="supplier-phone-number">Телефонный номер компании поставщика</label><br>
-    <input type="text" id="supplier-phone-number"><br>
-    <label for="supplier-address">Адрес компании поставщика</label><br>
-    <input type="text" id="supplier-address"><br>
+    <label for="product-name">Название товара</label><br>
+    <input type="text" id="product-name"><br>
+    <label for="category">ID категории товара</label><br>
+    <input type="text" id="category"><br>
+    <label for="unit-of-measurement">Название единицы измерения товара</label><br>
+    <input type="text" id="unit-of-measurement"><br>
+    <label for="is-vital">Входит ли товар в перечень ЖНВЛП?</label><br>
+    <input type="checkbox" id="is-vital"><br>
     <button type="submit">Добавить</button>
   </form>
 </div>
@@ -25,7 +27,7 @@
 <div style="margin-top: 60px;"></div>
 
 <div>
-  <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Поиск по полям поставщика...">
+  <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Поиск по полям товара...">
 </div>
 
 <div style="margin-top: 20px;"></div>

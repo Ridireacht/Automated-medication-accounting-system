@@ -1,6 +1,7 @@
 package com.vasiliy.project.controller;
 
 import com.vasiliy.project.service.CategoryService;
+import com.vasiliy.project.service.ProductService;
 import com.vasiliy.project.service.SupplierService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ public class PageController {
 
   private final CategoryService categoryService;
   private final SupplierService supplierService;
+  private final ProductService productService;
 
 
   @GetMapping("/home")
@@ -30,5 +32,11 @@ public class PageController {
   public String getSuppliers(Model model) {
     model.addAttribute("suppliers", supplierService.getAllSuppliers());
     return "suppliers";
+  }
+
+  @GetMapping("/products")
+  public String getProducts(Model model) {
+    model.addAttribute("products", productService.getAllProducts());
+    return "products";
   }
 }
