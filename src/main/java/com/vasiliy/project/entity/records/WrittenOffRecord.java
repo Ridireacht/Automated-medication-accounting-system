@@ -1,6 +1,6 @@
-package com.vasiliy.project.entity.entries;
+package com.vasiliy.project.entity.records;
 
-import com.vasiliy.project.entity.enums.Status;
+import com.vasiliy.project.entity.StorageProduct;
 import com.vasiliy.project.entity.info.Product;
 import com.vasiliy.project.entity.info.Supplier;
 import jakarta.persistence.Column;
@@ -11,7 +11,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,31 +18,19 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "storage_records")
-public class StorageEntry implements Serializable {
+@Table(name = "written_off_records")
+public class WrittenOffRecord {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @ManyToOne
-  @JoinColumn(name = "product_id")
-  private Product product;
-
-  @ManyToOne
-  @JoinColumn(name = "supplier_id")
-  private Supplier supplier;
+  @JoinColumn(name = "storage_product_id")
+  private StorageProduct storageProduct;
 
   private Long quantity;
 
-  @Column(name = "purchase_price")
-  private Double purchasePrice;
-
-  private Status status;
-
-  @Column(name = "arrived_at")
-  private LocalDateTime arrivedAt;
-
-  @Column(name = "expire_at")
-  private LocalDateTime expireAt;
+  @Column(name = "written_off_at")
+  private LocalDateTime writtenOffAt;
 }

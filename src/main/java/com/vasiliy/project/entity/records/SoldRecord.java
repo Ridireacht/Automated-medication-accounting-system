@@ -1,5 +1,6 @@
-package com.vasiliy.project.entity.entries;
+package com.vasiliy.project.entity.records;
 
+import com.vasiliy.project.entity.StorageProduct;
 import com.vasiliy.project.entity.info.Product;
 import com.vasiliy.project.entity.info.Supplier;
 import jakarta.persistence.Column;
@@ -17,23 +18,22 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "written_off_records")
-public class WrittenOffEntry {
+@Table(name = "sold_records")
+public class SoldRecord {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @ManyToOne
-  @JoinColumn(name = "product_id")
-  private Product product;
-
-  @ManyToOne
-  @JoinColumn(name = "supplier_id")
-  private Supplier supplier;
+  @JoinColumn(name = "storage_product_id")
+  private StorageProduct storageProduct;
 
   private Long quantity;
 
-  @Column(name = "writtenOffAt")
-  private LocalDateTime writtenOffAt;
+  @Column(name = "price_sold")
+  private Double priceSold;
+
+  @Column(name = "sold_at")
+  private LocalDateTime soldAt;
 }
