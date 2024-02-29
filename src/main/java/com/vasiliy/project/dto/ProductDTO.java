@@ -19,6 +19,7 @@ public class ProductDTO {
   @NotBlank
   private String unitOfMeasure;
 
+  @NotNull
   @Min(value = 1, message = "значение должно быть больше нуля")
   private Long expirationDays;
 
