@@ -32,7 +32,7 @@ public class CategoryController {
 
   @PutMapping("/{id}")
   public ResponseEntity<String> updateCategory(@PathVariable("id") Long categoryId, @RequestBody UpdateRequest updateRequest) {
-    if (updateRequest.getValue() == null || !updateRequest.typeMatchesAny(new String[] {"name"})) {
+    if (updateRequest.getType() == null || !updateRequest.typeMatchesAny(new String[] {"name"})) {
       throw new CustomBadRequestException();
     }
 

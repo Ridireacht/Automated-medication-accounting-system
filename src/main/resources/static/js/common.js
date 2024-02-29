@@ -129,9 +129,10 @@ function enableEdit(element, url, fieldName) {
       var recordId = element.parentElement.querySelector('td:first-child').textContent;
       var newValue = element.textContent.trim();
 
-      var requestBody = {};
-      requestBody[type] = fieldName;
-      requestBody[value] = newValue;
+      var requestBody = {
+        type: fieldName,
+        value: newValue
+      };
 
       fetch(url + recordId, {
         method: 'PUT',
