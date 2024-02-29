@@ -2,6 +2,8 @@ package com.vasiliy.project.controller;
 
 import com.vasiliy.project.dto.CategoryDTO;
 import com.vasiliy.project.dto.UpdateRequest;
+import com.vasiliy.project.exception.CustomBadRequestException;
+import com.vasiliy.project.exception.CustomValidationException;
 import com.vasiliy.project.service.CategoryService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -30,6 +32,14 @@ public class CategoryController {
 
   @PutMapping("/{id}")
   public ResponseEntity<String> updateCategory(@PathVariable("id") Long categoryId, @RequestBody UpdateRequest updateRequest) {
+    if (updateRequest.getValue() == null || !updateRequest.typeMatchesAny(new String[] {"name"})) {
+      throw new CustomBadRequestException();
+    }
+
+    if (updateRequest.getValue() == null || updateRequest.getValue().isBlank()) {
+      throw new CustomValidationException("поле не должно быть пустым");
+    }
+
     categoryService.updateCategory(categoryId, updateRequest);
     return ResponseEntity.ok().body("{}");
   }

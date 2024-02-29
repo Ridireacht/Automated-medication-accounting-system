@@ -1,6 +1,7 @@
 package com.vasiliy.project.service.impl;
 
 import com.vasiliy.project.dto.CategoryDTO;
+import com.vasiliy.project.dto.UpdateRequest;
 import com.vasiliy.project.entity.info.Category;
 import com.vasiliy.project.mapper.CategoryMapper;
 import com.vasiliy.project.repository.CategoryRepository;
@@ -35,10 +36,13 @@ public class CategoryServiceImpl implements CategoryService {
 
   @Override
   @Transactional
-  public Boolean updateCategory(Long categoryId, CategoryDTO categoryDTO) {
+  public Boolean updateCategory(Long categoryId, UpdateRequest updateRequest) {
     if (categoryRepository.existsById(categoryId)) {
-      Category category = categoryMapper.mapDTOtoCategory(categoryDTO);
-      category.setId(categoryId);
+      Category category = categoryRepository.findById(categoryId).get();
+
+      if (updateRequest.getType().equals("name")) {
+        category.setName(updateRequest.getValue());
+      }
 
       categoryRepository.save(category);
 
