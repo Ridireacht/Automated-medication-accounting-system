@@ -1,10 +1,10 @@
 package com.vasiliy.project.repository;
 
-import com.vasiliy.project.entity.info.Product;
+import com.vasiliy.project.entity.records.WrittenOffRecord;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface WrittenOffRecordRepository extends JpaRepository<WrittenOffRecord, Long> {
 
 }
