@@ -36,6 +36,7 @@ public class PageController {
 
   @GetMapping("/products")
   public String getProducts(Model model) {
+    model.addAttribute("categories", categoryService.getAllCategories());
     model.addAttribute("products", productService.getAllProducts());
     return "products";
   }

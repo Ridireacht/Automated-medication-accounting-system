@@ -23,12 +23,15 @@ public class Product {
 
   private String name;
 
-  @Column(name = "unit_of_measure")
-  private String unitOfMeasure;
-
   @ManyToOne
   @JoinColumn(name = "category_id")
   private Category category;
+
+  @Column(name = "unit_of_measure")
+  private String unitOfMeasure;
+
+  @Column(name = "expiration_days")
+  private Long expirationDays;
 
   @Column(name = "is_vital")
   private Boolean isVital;

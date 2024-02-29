@@ -1,6 +1,8 @@
 package com.vasiliy.project.dto;
 
-import com.vasiliy.project.entity.info.Category;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,8 +10,17 @@ import lombok.Setter;
 @Setter
 public class ProductDTO {
 
+  @NotBlank
   private String name;
+
+  private Long categoryId;
+
+  @NotBlank
   private String unitOfMeasure;
-  private Category category;
+
+  @Min(value = 1, message = "значение должно быть больше нуля")
+  private Long expirationDays;
+
+  @NotNull
   private Boolean isVital;
 }
