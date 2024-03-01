@@ -45,7 +45,7 @@
     <th onclick="sortTable(1)">Товар</th>
     <th onclick="sortTable(2)">Поставщик</th>
     <th onclick="sortTable(3)">Количество</th>
-    <th onclick="sortTable(3)">Срок годности истекает:</th>
+    <th onclick="sortTable(4)">Срок годности истекает:</th>
     <th>Действия</th>
   </tr>
   </thead>
@@ -89,6 +89,94 @@
 
     sendPostRequest(requestBody, '/storage');
   });
+
+
+  function sendPutRequest(requestBody, storageProductId) {
+      fetch('/storage/' + storageProductId, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      })
+      .then(response => {
+        if (!response.ok) {
+          return response.json().then(errorData => {
+            var errorMessage = errorData.message;
+            throw new Error(errorMessage);
+          });
+        }
+        window.location.reload();
+      })
+      .catch(error => {
+        alert('Ошибка при операции: ' + error.message);
+      });
+  }
+
+
+  function sellProduct(button) {
+    var row = button.parentNode.parentNode;
+    var storageProductId = row.cells[0].innerText;
+    var productName = row.cells[1].innerText;
+    var productQuantity = parseInt(row.cells[3].innerText, 10);
+
+    var requestedQuantity = parseInt(prompt("Сколько штук вы хотите продать?", ""), 10);
+    if (requestedQuantity === null || requestedQuantity === "") {
+        return;
+    }
+
+    if (requestedQuantity > productQuantity) {
+        alert("Количество не должно превышать того, что на складе!");
+        return;
+    }12
+
+
+    var pricePerUnit = parseFloat(prompt("По какой цене/штука вы хотите продать товар?", ""));
+    if (pricePerUnit === null || pricePerUnit === "") {
+        return;
+    }
+
+
+    var confirmSell = confirm("Вы уверены, что хотите продать " + requestedQuantity + " штук товара '" + productName + "' по цене " + pricePerUnit + " за штуку со склада?");
+    if (confirmSell) {
+        var requestBody = {
+            type: 'sold',
+            quantity: requestedQuantity,
+            priceSold: pricePerUnit
+        };
+
+        sendPutRequest(requestBody, storageProductId);
+    }
+  }
+
+
+  function writeOffProduct(button) {
+    var row = button.parentNode.parentNode;
+    var storageProductId = row.cells[0].innerText;
+    var productName = row.cells[1].innerText;
+    var productQuantity = parseInt(row.cells[3].innerText, 10);
+
+    var requestedQuantity = parseInt(prompt("Сколько штук вы хотите списать?", ""), 10);
+    if (requestedQuantity === null || requestedQuantity === "") {
+        return;
+    }
+
+    if (requestedQuantity > productQuantity) {
+        alert("Количество не должно превышать того, что на складе!");
+        return;
+    }
+
+
+    var confirmSell = confirm("Вы уверены, что хотите списать " + requestedQuantity + " штук товара '" + productName + "' со склада?");
+    if (confirmSell) {
+        var requestBody = {
+            type: 'writtenOff',
+            quantity: requestedQuantity
+        };
+
+        sendPutRequest(requestBody, storageProductId);
+    }
+  }
 </script>
 </body>
 </html>
