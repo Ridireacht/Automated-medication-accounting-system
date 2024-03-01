@@ -22,7 +22,7 @@ public class InflowRequest {
 
   @NotNull
   @Min(value = 1, message = "значение должно быть больше нуля")
-  private Double boughtPrice;
+  private Double priceBought;
 
   @NotNull
   private LocalDateTime manufacturedOn;

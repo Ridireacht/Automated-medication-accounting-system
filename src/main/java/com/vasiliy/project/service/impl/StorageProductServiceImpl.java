@@ -65,7 +65,7 @@ public class StorageProductServiceImpl implements StorageProductService {
     inflowRecord.setStorageProduct(storageProduct);
     inflowRecord.setQuantity(inflowRequest.getQuantity());
     inflowRecord.setWrittenAt(LocalDateTime.now());
-    inflowRecord.setPriceBought(inflowRequest.getBoughtPrice());
+    inflowRecord.setPriceBought(inflowRequest.getPriceBought());
 
     inflowRecordRepository.save(inflowRecord);
 
