@@ -24,8 +24,13 @@ public class StorageProductServiceImpl implements StorageProductService {
 
 
   @Override
+  public Long getRemainingQuantityOfStorageProduct(Long storageProductId) {
+    return storageProductRepository.findById(storageProductId).get().getQuantity();
+  }
+
+  @Override
   public List<StorageProduct> getAllStorageProducts() {
-    return null;
+    return storageProductRepository.findAll();
   }
 
   @Override

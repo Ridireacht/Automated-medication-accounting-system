@@ -45,6 +45,10 @@ public class StorageProductController {
       }
     }
 
+    if (outflowRequest.getQuantity() > storageProductService.getRemainingQuantityOfStorageProduct(storageProductId)) {
+      throw new CustomValidationException("количество не должно превышать того, что на складе");
+    }
+
     if(outflowRequest.getType().equals("sold")) {
       storageProductService.sellStorageProduct(storageProductId, outflowRequest);
     } else {

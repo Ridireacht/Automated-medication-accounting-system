@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface StorageProductService {
 
+  Long getRemainingQuantityOfStorageProduct(Long storageProductId);
+
   List<StorageProduct> getAllStorageProducts();
 
   Boolean addNewStorageProduct(InflowRequest inflowRequest);
