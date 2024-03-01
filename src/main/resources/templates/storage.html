@@ -12,12 +12,12 @@
 <div class="add-form">
   <h2>Оприходовать новый товар</h2>
   <form id="add-form">
-    <label for="product-type">Товар</label><br>
-    <select id="product-type">
+    <label for="product-id">Товар</label><br>
+    <select id="product-id">
       <option th:each="product : ${products}" th:value="${product.id}" th:text="${product.name}"></option>
     </select><br><br>
-    <label for="supplier-type">Поставщик</label><br>
-    <select id="supplier-type">
+    <label for="supplier-id">Поставщик</label><br>
+    <select id="supplier-id">
       <option th:each="supplier : ${suppliers}" th:value="${supplier.id}" th:text="${supplier.name}"></option>
     </select><br><br>
     <label for="quantity">Количество (шт.)</label><br>
@@ -73,17 +73,21 @@
   document.getElementById("add-form").addEventListener("submit", function(event) {
     event.preventDefault();
 
-    var supplierName = document.getElementById("supplier-name").value.trim();
-    var supplierPhoneNumber = document.getElementById("supplier-phone-number").value.trim();
-    var supplierAddress = document.getElementById("supplier-address").value.trim();
+    var storageProductId = document.getElementById("product-id").value;
+    var storageSupplierId = document.getElementById("supplier-id").value;
+    var storageQuantity = document.getElementById("quantity").value;
+    var storagePriceBought = document.getElementById("price-bought").value;
+    var storageManufacturedOn = document.getElementById("manufactured-on").value;
 
     var requestBody = {
-      name: supplierName,
-      phoneNumber: supplierPhoneNumber,
-      address: supplierAddress
+      productId: storageProductId,
+      supplierId: storageSupplierId,
+      quantity: storageQuantity,
+      priceBought: storagePriceBought,
+      manufacturedOn: storageManufacturedOn
     };
 
-    sendPostRequest(requestBody, '/suppliers');
+    sendPostRequest(requestBody, '/storage');
   });
 </script>
 </body>
