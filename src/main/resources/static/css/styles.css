@@ -25,6 +25,11 @@ th:hover {
   background-color: #ddd;
 }
 
+.container {
+  display: flex;
+  justify-content: space-between;
+}
+
 .add-form {
   font-family: Arial, sans-serif;
   font-size: 14px;

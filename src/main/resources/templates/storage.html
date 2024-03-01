@@ -32,8 +32,14 @@
 
 <div style="margin-top: 60px;"></div>
 
-<div>
-  <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Поиск по полям записи...">
+<div class="container">
+  <div>
+    <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Поиск по полям записи...">
+  </div>
+  <div>
+    <label for="show-zero-quantity">Показать неактивные записи?</label>
+    <input type="checkbox" checked id="show-zero-quantity" style="transform: scale(1.1);" onchange="toggleZeroQuantity()">
+  </div>
 </div>
 
 <div style="margin-top: 20px;"></div>
@@ -175,6 +181,23 @@
         };
 
         sendPutRequest(requestBody, storageProductId);
+    }
+  }
+
+
+  function toggleZeroQuantity() {
+    var showZeroQuantity = document.getElementById("show-zero-quantity").checked;
+    var tableRows = document.getElementById("records-table").getElementsByTagName("tr");
+
+    for (var i = 1; i < tableRows.length; i++) {
+      var quantityCell = tableRows[i].getElementsByTagName("td")[3];
+      var quantity = parseInt(quantityCell.innerText.trim(), 10);
+
+      if (quantity === 0 && !showZeroQuantity) {
+        tableRows[i].style.display = "none";
+      } else {
+        tableRows[i].style.display = "";
+      }
     }
   }
 </script>
