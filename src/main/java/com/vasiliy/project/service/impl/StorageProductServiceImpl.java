@@ -41,6 +41,21 @@ public class StorageProductServiceImpl implements StorageProductService {
   }
 
   @Override
+  public List<InflowRecord> getAllInflowRecords() {
+    return inflowRecordRepository.findAll();
+  }
+
+  @Override
+  public List<SoldRecord> getAllSoldRecords() {
+    return soldRecordRepository.findAll();
+  }
+
+  @Override
+  public List<WrittenOffRecord> getAllWrittenOffRecords() {
+    return writtenOffRecordRepository.findAll();
+  }
+
+  @Override
   @Transactional
   public Boolean addNewStorageProduct(InflowRequest inflowRequest) {
     StorageProduct storageProduct = storageProductMapper.mapInflowRequestToProduct(inflowRequest);

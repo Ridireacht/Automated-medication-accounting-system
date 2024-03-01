@@ -48,4 +48,22 @@ public class PageController {
     model.addAttribute("storageProducts", storageProductService.getAllStorageProducts());
     return "storage";
   }
+
+  @GetMapping("/storage/inflow")
+  public String getInflowRecords(Model model) {
+    model.addAttribute("inflowRecords", storageProductService.getAllInflowRecords());
+    return "inflow";
+  }
+
+  @GetMapping("/storage/sold")
+  public String getSoldRecords(Model model) {
+    model.addAttribute("soldRecords", storageProductService.getAllSoldRecords());
+    return "sold";
+  }
+
+  @GetMapping("/storage/written-off")
+  public String getWrittenOffRecords(Model model) {
+    model.addAttribute("writtenOffRecords", storageProductService.getAllWrittenOffRecords());
+    return "written-off";
+  }
 }
