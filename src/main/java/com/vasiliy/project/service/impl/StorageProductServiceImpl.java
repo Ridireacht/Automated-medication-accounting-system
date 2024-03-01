@@ -3,12 +3,15 @@ package com.vasiliy.project.service.impl;
 import com.vasiliy.project.dto.InflowRequest;
 import com.vasiliy.project.dto.OutflowRequest;
 import com.vasiliy.project.entity.StorageProduct;
+import com.vasiliy.project.entity.records.InflowRecord;
+import com.vasiliy.project.mapper.StorageProductMapper;
 import com.vasiliy.project.repository.InflowRecordRepository;
 import com.vasiliy.project.repository.SoldRecordRepository;
 import com.vasiliy.project.repository.StorageProductRepository;
 import com.vasiliy.project.repository.WrittenOffRecordRepository;
 import com.vasiliy.project.service.StorageProductService;
 import jakarta.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +24,8 @@ public class StorageProductServiceImpl implements StorageProductService {
   private final InflowRecordRepository inflowRecordRepository;
   private final SoldRecordRepository soldRecordRepository;
   private final WrittenOffRecordRepository writtenOffRecordRepository;
+
+  private final StorageProductMapper storageProductMapper;
 
 
   @Override
@@ -36,7 +41,18 @@ public class StorageProductServiceImpl implements StorageProductService {
   @Override
   @Transactional
   public Boolean addNewStorageProduct(InflowRequest inflowRequest) {
-    return null;
+    StorageProduct storageProduct = storageProductMapper.mapInflowRequestToProduct(inflowRequest);
+    storageProduct = storageProductRepository.save(storageProduct);
+
+    InflowRecord inflowRecord = new InflowRecord();
+    inflowRecord.setStorageProduct(storageProduct);
+    inflowRecord.setQuantity(inflowRequest.getQuantity());
+    inflowRecord.setWrittenAt(LocalDateTime.now());
+    inflowRecord.setPriceBought(inflowRequest.getBoughtPrice());
+
+    inflowRecordRepository.save(inflowRecord);
+
+    return true;
   }
 
   @Override
