@@ -4,6 +4,8 @@ import com.vasiliy.project.dto.InflowRequest;
 import com.vasiliy.project.dto.OutflowRequest;
 import com.vasiliy.project.entity.StorageProduct;
 import com.vasiliy.project.entity.records.InflowRecord;
+import com.vasiliy.project.entity.records.SoldRecord;
+import com.vasiliy.project.entity.records.WrittenOffRecord;
 import com.vasiliy.project.mapper.StorageProductMapper;
 import com.vasiliy.project.repository.InflowRecordRepository;
 import com.vasiliy.project.repository.SoldRecordRepository;
@@ -58,7 +60,17 @@ public class StorageProductServiceImpl implements StorageProductService {
   @Override
   @Transactional
   public Boolean sellStorageProduct(Long storageProductId, OutflowRequest sellRequest) {
+    StorageProduct storageProduct = storageProductRepository.findById(storageProductId).get();
+    storageProduct.setQuantity(storageProduct.getQuantity() - sellRequest.getQuantity());
+    storageProductRepository.save(storageProduct);
 
+    SoldRecord soldRecord = new SoldRecord();
+    soldRecord.setStorageProduct(storageProduct);
+    soldRecord.setQuantity(sellRequest.getQuantity());
+    soldRecord.setPriceSold(sellRequest.getSoldPrice());
+    soldRecord.setSoldAt(LocalDateTime.now());
+
+    soldRecordRepository.save(soldRecord);
 
     return true;
   }
@@ -66,7 +78,16 @@ public class StorageProductServiceImpl implements StorageProductService {
   @Override
   @Transactional
   public Boolean writeOffStorageProduct(Long storageProductId, OutflowRequest writeOffRequest) {
+    StorageProduct storageProduct = storageProductRepository.findById(storageProductId).get();
+    storageProduct.setQuantity(storageProduct.getQuantity() - writeOffRequest.getQuantity());
+    storageProductRepository.save(storageProduct);
 
+    WrittenOffRecord writtenOffRecord = new WrittenOffRecord();
+    writtenOffRecord.setStorageProduct(storageProduct);
+    writtenOffRecord.setQuantity(writeOffRequest.getQuantity());
+    writtenOffRecord.setWrittenOffAt(LocalDateTime.now());
+
+    writtenOffRecordRepository.save(writtenOffRecord);
 
     return true;
   }
