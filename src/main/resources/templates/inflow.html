@@ -2,9 +2,45 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <title>Записи о приходе товаров</title>
 </head>
 <body>
 
+<h1 style="text-align: center;">Записи о приходе товаров</h1>
+
+<div style="margin-top: 60px;"></div>
+
+<div>
+  <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Поиск по полям записей...">
+</div>
+
+<div style="margin-top: 20px;"></div>
+
+<table id="records-table">
+  <thead>
+  <tr>
+    <th onclick="sortTable(0)">ID</th>
+    <th onclick="sortTable(1)">Складской ID товара</th>
+    <th onclick="sortTable(1)">Количество</th>
+    <th onclick="sortTable(1)">Закупочная цена (за шт.)</th>
+    <th onclick="sortTable(1)">Дата записи</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="inflowRecord : ${inflowRecords}">
+    <td th:text="${inflowRecord.id}"></td>
+    <td th:text="${inflowRecord.storageProduct.id}"></td>
+    <td th:text="${inflowRecord.quantity}"></td>
+    <td th:text="${inflowRecord.priceBought"></td>
+    <td th:text="${inflowRecord.writtenAt"></td>
+  </tr>
+  </tbody>
+</table>
+
+<div style="text-align: center;">
+  <a href="/home" class="home-button">Домой</a>
+</div>
+
+<script src="/js/common.js"></script>
 </body>
 </html>
