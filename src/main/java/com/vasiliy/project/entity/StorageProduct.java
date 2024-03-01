@@ -42,10 +42,7 @@ public class StorageProduct {
 
   @Column(name = "expires_at")
   private LocalDateTime expiresAt;
-
-  @Column(name = "is_active")
-  private Boolean isActive;
-
+  
 
   @OneToMany(mappedBy = "storageProduct", cascade = CascadeType.ALL)
   private List<InflowRecord> inflowRecords;
