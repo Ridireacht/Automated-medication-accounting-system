@@ -2,10 +2,12 @@ package com.vasiliy.project.service.impl;
 
 import com.vasiliy.project.dto.info.ProductDTO;
 import com.vasiliy.project.dto.info.UpdateRequest;
+import com.vasiliy.project.entity.StorageProduct;
 import com.vasiliy.project.entity.info.Product;
 import com.vasiliy.project.mapper.ProductMapper;
 import com.vasiliy.project.repository.CategoryRepository;
 import com.vasiliy.project.repository.ProductRepository;
+import com.vasiliy.project.repository.StorageProductRepository;
 import com.vasiliy.project.service.ProductService;
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -18,6 +20,7 @@ public class ProductServiceImpl implements ProductService {
 
   private final ProductRepository productRepository;
   private final CategoryRepository categoryRepository;
+  private final StorageProductRepository storageProductRepository;
 
   private final ProductMapper productMapper;
 
@@ -46,7 +49,17 @@ public class ProductServiceImpl implements ProductService {
         case "name" -> product.setName(updateRequest.getValue());
         case "categoryId" -> product.setCategory(categoryRepository.findById(Long.valueOf(updateRequest.getValue())).get());
         case "unitOfMeasure" -> product.setUnitOfMeasure(updateRequest.getValue());
-        case "expirationDays" -> product.setExpirationDays(Long.valueOf(updateRequest.getValue()));
+        case "expirationDays" -> {
+          List<StorageProduct> storageProducts = product.getStorageProducts();
+
+          for (StorageProduct sp : storageProducts) {
+            sp.setExpiresAt(sp.getExpiresAt().plusDays(-product.getExpirationDays()));
+            sp.setExpiresAt(sp.getExpiresAt().plusDays(Long.parseLong(updateRequest.getValue())));
+            storageProductRepository.save(sp);
+          }
+
+          product.setExpirationDays(Long.valueOf(updateRequest.getValue()));
+        }
         case "isVital" -> product.setIsVital(updateRequest.getValue().equals("true"));
       }
 
