@@ -31,7 +31,7 @@
     <td th:text="${writtenOffRecord.id}"></td>
     <td th:text="${writtenOffRecord.storageProduct.id}"></td>
     <td th:text="${writtenOffRecord.quantity}"></td>
-    <td th:text="${writtenOffRecord.writtenOffAt}"></td>
+    <td th:text="${#temporals.format(writtenOffRecord.writtenOffAt, 'dd MMMM yyyy, HH:mm')}"></td>
   </tr>
   </tbody>
 </table>

@@ -33,7 +33,7 @@
     <td th:text="${inflowRecord.storageProduct.id}"></td>
     <td th:text="${inflowRecord.quantity}"></td>
     <td th:text="${inflowRecord.priceBought}"></td>
-    <td th:text="${inflowRecord.writtenAt}"></td>
+    <td th:text="${#temporals.format(inflowRecord.writtenAt, 'dd MMMM yyyy, HH:mm')}"></td>
   </tr>
   </tbody>
 </table>

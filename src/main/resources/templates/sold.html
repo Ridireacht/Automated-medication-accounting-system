@@ -33,7 +33,7 @@
     <td th:text="${soldRecord.storageProduct.id}"></td>
     <td th:text="${soldRecord.quantity}"></td>
     <td th:text="${soldRecord.priceSold}"></td>
-    <td th:text="${soldRecord.soldAt}"></td>
+    <td th:text="${#temporals.format(soldRecord.soldAt, 'dd MMMM yyyy, HH:mm')}"></td>
   </tr>
   </tbody>
 </table>

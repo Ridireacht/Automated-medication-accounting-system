@@ -45,7 +45,7 @@
     <th onclick="sortTable(1)">Товар</th>
     <th onclick="sortTable(2)">Поставщик</th>
     <th onclick="sortTable(3)">Количество</th>
-    <th onclick="sortTable(3)">Срок годности истекает в:</th>
+    <th onclick="sortTable(3)">Срок годности истекает:</th>
     <th>Действия</th>
   </tr>
   </thead>
@@ -55,7 +55,7 @@
     <td th:text="${storageProduct.product.name}"></td>
     <td th:text="${storageProduct.supplier.name}"></td>
     <td th:text="${storageProduct.quantity}"></td>
-    <td th:text="${storageProduct.expiresAt}"></td>
+    <td th:text="${#temporals.format(storageProduct.expiresAt, 'dd MMMM yyyy, HH:mm')}"></td>
     <td>
       <button class="sell-button" onclick="sellProduct(this)">Продать...</button>
       <button class="write-off-button" onclick="writeOffProduct(this)">Списать...</button>
