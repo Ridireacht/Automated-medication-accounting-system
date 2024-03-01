@@ -42,18 +42,20 @@
   <thead>
   <tr>
     <th onclick="sortTable(0)">ID</th>
-    <th onclick="sortTable(1)">Название</th>
-    <th onclick="sortTable(2)">Телефонный номер</th>
-    <th onclick="sortTable(3)">Адрес</th>
+    <th onclick="sortTable(1)">Товар</th>
+    <th onclick="sortTable(2)">Поставщик</th>
+    <th onclick="sortTable(3)">Количество</th>
+    <th onclick="sortTable(3)">Срок годности истекает в:</th>
     <th>Действия</th>
   </tr>
   </thead>
   <tbody>
-  <tr th:each="supplier : ${suppliers}">
-    <td th:text="${supplier.id}"></td>
-    <td th:text="${supplier.name}" ondblclick="enableEdit(this, '/suppliers/', 'name')"></td>
-    <td th:text="${supplier.phoneNumber}" ondblclick="enableEdit(this, '/suppliers/', 'phoneNumber')"></td>
-    <td th:text="${supplier.address}" ondblclick="enableEdit(this, '/suppliers/', 'address')"></td>
+  <tr th:each="storageProduct : ${storageProducts}">
+    <td th:text="${storageProduct.id}"></td>
+    <td th:text="${storageProduct.product.name}"></td>
+    <td th:text="${storageProduct.supplier.name}"></td>
+    <td th:text="${storageProduct.quantity}"></td>
+    <td th:text="${storageProduct.expiresAt}"></td>
     <td><button class="delete-button" onclick="deleteRecord(this, '/suppliers/')">Удалить</button></td>
   </tr>
   </tbody>
