@@ -22,7 +22,7 @@ public class StorageProductServiceImpl implements StorageProductService {
   private final SoldRecordRepository soldRecordRepository;
   private final WrittenOffRecordRepository writtenOffRecordRepository;
 
-  
+
   @Override
   public List<StorageProduct> getAllStorageProducts() {
     return null;
@@ -36,13 +36,13 @@ public class StorageProductServiceImpl implements StorageProductService {
 
   @Override
   @Transactional
-  public Boolean sellStorageProduct(OutflowRequest sellRequest) {
+  public Boolean sellStorageProduct(Long storageProductId, OutflowRequest sellRequest) {
     return null;
   }
 
   @Override
   @Transactional
-  public Boolean writeOffStorageProduct(OutflowRequest writeOffRequest) {
+  public Boolean writeOffStorageProduct(Long storageProductId, OutflowRequest writeOffRequest) {
     return null;
   }
 }

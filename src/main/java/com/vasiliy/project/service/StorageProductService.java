@@ -11,7 +11,7 @@ public interface StorageProductService {
 
   Boolean addNewStorageProduct(InflowRequest inflowRequest);
 
-  Boolean sellStorageProduct(OutflowRequest sellRequest);
+  Boolean sellStorageProduct(Long storageProductId, OutflowRequest sellRequest);
 
-  Boolean writeOffStorageProduct(OutflowRequest writeOffRequest);
+  Boolean writeOffStorageProduct(Long storageProductId, OutflowRequest writeOffRequest);
 }
