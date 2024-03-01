@@ -2,8 +2,6 @@ package com.vasiliy.project.controller;
 
 import com.vasiliy.project.dto.InflowRequest;
 import com.vasiliy.project.dto.OutflowRequest;
-import com.vasiliy.project.dto.info.ProductDTO;
-import com.vasiliy.project.dto.info.UpdateRequest;
 import com.vasiliy.project.exception.CustomBadRequestException;
 import com.vasiliy.project.exception.CustomValidationException;
 import com.vasiliy.project.service.StorageProductService;
@@ -38,9 +36,9 @@ public class StorageProductController {
     }
 
     if (outflowRequest.getType().equals("sold")) {
-      if (outflowRequest.getSoldPrice() == null) {
+      if (outflowRequest.getPriceSold() == null) {
         throw new CustomBadRequestException();
-      } else if (outflowRequest.getSoldPrice() <= 0.0) {
+      } else if (outflowRequest.getPriceSold() <= 0.0) {
         throw new CustomValidationException("цена продажи должна быть больше 0");
       }
     }

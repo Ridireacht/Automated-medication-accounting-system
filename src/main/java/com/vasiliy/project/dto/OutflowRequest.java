@@ -16,7 +16,7 @@ public class OutflowRequest {
   @Min(value = 1, message = "значение должно быть больше нуля")
   private Long quantity;
 
-  private Double soldPrice;
+  private Double priceSold;
 
 
   public boolean typeMatchesAny(String[] strings) {

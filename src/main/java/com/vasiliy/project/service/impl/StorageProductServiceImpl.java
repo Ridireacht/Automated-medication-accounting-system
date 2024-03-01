@@ -82,7 +82,7 @@ public class StorageProductServiceImpl implements StorageProductService {
     SoldRecord soldRecord = new SoldRecord();
     soldRecord.setStorageProduct(storageProduct);
     soldRecord.setQuantity(sellRequest.getQuantity());
-    soldRecord.setPriceSold(sellRequest.getSoldPrice());
+    soldRecord.setPriceSold(sellRequest.getPriceSold());
     soldRecord.setSoldAt(LocalDateTime.now());
 
     soldRecordRepository.save(soldRecord);
