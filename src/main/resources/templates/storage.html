@@ -56,7 +56,10 @@
     <td th:text="${storageProduct.supplier.name}"></td>
     <td th:text="${storageProduct.quantity}"></td>
     <td th:text="${storageProduct.expiresAt}"></td>
-    <td><button class="delete-button" onclick="deleteRecord(this, '/suppliers/')">Удалить</button></td>
+    <td>
+      <button class="sell-button" onclick="sellProduct(this)">Продать...</button>
+      <button class="write-off-button" onclick="writeOffProduct(this)">Списать...</button>
+    </td>
   </tr>
   </tbody>
 </table>
