@@ -1,7 +1,7 @@
 package com.vasiliy.project.service;
 
-import com.vasiliy.project.dto.SupplierDTO;
-import com.vasiliy.project.dto.UpdateRequest;
+import com.vasiliy.project.dto.info.SupplierDTO;
+import com.vasiliy.project.dto.info.UpdateRequest;
 import com.vasiliy.project.entity.info.Supplier;
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.vasiliy.project.dto;
+package com.vasiliy.project.dto.info;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;

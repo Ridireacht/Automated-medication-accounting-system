@@ -1,7 +1,7 @@
 package com.vasiliy.project.controller;
 
-import com.vasiliy.project.dto.CategoryDTO;
-import com.vasiliy.project.dto.UpdateRequest;
+import com.vasiliy.project.dto.info.CategoryDTO;
+import com.vasiliy.project.dto.info.UpdateRequest;
 import com.vasiliy.project.exception.CustomBadRequestException;
 import com.vasiliy.project.exception.CustomValidationException;
 import com.vasiliy.project.service.CategoryService;

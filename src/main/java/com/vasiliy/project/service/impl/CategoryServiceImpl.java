@@ -1,7 +1,7 @@
 package com.vasiliy.project.service.impl;
 
-import com.vasiliy.project.dto.CategoryDTO;
-import com.vasiliy.project.dto.UpdateRequest;
+import com.vasiliy.project.dto.info.CategoryDTO;
+import com.vasiliy.project.dto.info.UpdateRequest;
 import com.vasiliy.project.entity.info.Category;
 import com.vasiliy.project.mapper.CategoryMapper;
 import com.vasiliy.project.repository.CategoryRepository;

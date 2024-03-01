@@ -1,6 +1,6 @@
 package com.vasiliy.project.mapper;
 
-import com.vasiliy.project.dto.CategoryDTO;
+import com.vasiliy.project.dto.info.CategoryDTO;
 import com.vasiliy.project.entity.info.Category;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;

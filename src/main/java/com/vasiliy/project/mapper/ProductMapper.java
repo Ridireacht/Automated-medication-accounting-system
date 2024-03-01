@@ -1,6 +1,6 @@
 package com.vasiliy.project.mapper;
 
-import com.vasiliy.project.dto.ProductDTO;
+import com.vasiliy.project.dto.info.ProductDTO;
 import com.vasiliy.project.entity.info.Product;
 import com.vasiliy.project.repository.CategoryRepository;
 import org.mapstruct.Mapper;
