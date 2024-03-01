@@ -45,6 +45,8 @@ public class PageController {
 
   @GetMapping("/storage")
   public String getStorage(Model model) {
+    model.addAttribute("products", productService.getAllProducts());
+    model.addAttribute("suppliers", supplierService.getAllSuppliers());
     model.addAttribute("storageProducts", storageProductService.getAllStorageProducts());
     return "storage";
   }
