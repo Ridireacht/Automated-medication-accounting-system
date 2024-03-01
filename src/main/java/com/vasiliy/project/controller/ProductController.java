@@ -42,7 +42,11 @@ public class ProductController {
 
     if (updateRequest.getType().equals("expirationDays")) {
       try {
-        Long.parseLong(updateRequest.getValue());
+        Long value = Long.parseLong(updateRequest.getValue());
+
+        if (value <= 0) {
+          throw new CustomValidationException("значение должно быть больше нуля");
+        }
       } catch (NumberFormatException e) {
         throw new CustomValidationException("введённое значение не является числовым");
       }
