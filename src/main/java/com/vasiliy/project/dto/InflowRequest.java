@@ -17,6 +17,7 @@ public class InflowRequest {
   private Long supplierId;
 
   @NotNull
+  @Min(value = 1, message = "значение должно быть больше нуля")
   private Long quantity;
 
   @NotNull

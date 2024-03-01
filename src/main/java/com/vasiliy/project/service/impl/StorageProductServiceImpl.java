@@ -58,12 +58,16 @@ public class StorageProductServiceImpl implements StorageProductService {
   @Override
   @Transactional
   public Boolean sellStorageProduct(Long storageProductId, OutflowRequest sellRequest) {
-    return null;
+
+
+    return true;
   }
 
   @Override
   @Transactional
   public Boolean writeOffStorageProduct(Long storageProductId, OutflowRequest writeOffRequest) {
-    return null;
+
+
+    return true;
   }
 }
