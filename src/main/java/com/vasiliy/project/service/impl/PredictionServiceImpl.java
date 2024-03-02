@@ -79,11 +79,28 @@ public class PredictionServiceImpl implements PredictionService {
 
   @Override
   public PredictionDataDTO getPredictionDTO(Long productId, Long numberOfLastWeeks) {
+    PredictionDataDTO predictionDataDTO = new PredictionDataDTO();
+
+
+    // Собираем данные о расходе товара за последние numberOfLastWeeks недель
     List<Integer> outflowValues = collectOutflowData(productId, numberOfLastWeeks);
 
 
+    // Подсчитываем количество дней, когда расход товара ещё не начал осуществляться
+    long countMinusOnes = outflowValues.stream()
+        .filter(element -> element.equals(-1))
+        .count();
 
-    return null;
+
+    // Удаляем лишние данные, высчитываем точность прогноза
+    outflowValues.removeIf(element -> element.equals(-1));
+    predictionDataDTO.setPrecision(1.0 - (countMinusOnes / (numberOfLastWeeks * 7)));
+
+
+
+
+
+    return predictionDataDTO;
   }
 
 
