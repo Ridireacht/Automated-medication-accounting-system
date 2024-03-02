@@ -6,7 +6,9 @@ import com.vasiliy.project.entity.records.WrittenOffRecord;
 import com.vasiliy.project.repository.SoldRecordRepository;
 import com.vasiliy.project.repository.WrittenOffRecordRepository;
 import com.vasiliy.project.service.PredictionService;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,56 +25,88 @@ public class PredictionServiceImpl implements PredictionService {
 
   @Override
   public List<Integer> collectOutflowData(Long productId, Integer numberOfLastWeeks) {
-    int currentOutflowValue;
-    boolean hasOutflowedAlready = false;
+    int dayDifference;
+    Period period;
     List<Integer> outflowValues = new ArrayList<>();
 
 
     // Определяем временные пределы, в которых собираются данные
-    LocalDateTime endDate = LocalDateTime.now();
-    LocalDateTime startDate = endDate.minusWeeks(numberOfLastWeeks);
+    LocalDateTime endDateTime = LocalDateTime.now();
+    LocalDateTime startDateTime = endDateTime.minusWeeks(numberOfLastWeeks);
+
+    LocalDate startDate = startDateTime.toLocalDate();
 
 
-    // Отсеиваем записи о продажах конкретного товара в заданный период
-    List<SoldRecord> soldRecords = soldRecordRepository.findAll();
-    soldRecords.removeIf(obj -> !obj.getStorageProduct().getProduct().getId().equals(productId));
-    soldRecords.removeIf(obj -> !isDateBetween(obj.getSoldAt(), startDate, endDate));
+    // Получаем записи о продажах конкретного товара в заданный период
+    List<SoldRecord> soldRecords = soldRecordRepository.findAllByProductIdAndBetweenDates(productId, endDateTime, startDateTime);
 
 
-    // Отсеиваем записи о списаниях конкретного товара в заданный период
-    List<WrittenOffRecord> writtenOffRecords = writtenOffRecordRepository.findAll();
-    writtenOffRecords.removeIf(obj -> !obj.getStorageProduct().getProduct().getId().equals(productId));
-    writtenOffRecords.removeIf(obj -> !isDateBetween(obj.getWrittenOffAt(), startDate, endDate));
+    // Получаем записи о списаниях конкретного товара в заданный период
+    List<WrittenOffRecord> writtenOffRecords = writtenOffRecordRepository.findAllByProductIdAndBetweenDates(productId, endDateTime, startDateTime);
 
 
-    // Цикл, собирающий данные о расходах товара за каждый день внутри периода
-    LocalDateTime counter = startDate;
-    while (!counter.isAfter(endDate)) {
-      currentOutflowValue = 0;
-
-      for (SoldRecord obj : soldRecords) {
-        if (obj.getSoldAt().toLocalDate().equals(counter.toLocalDate())) {
-          currentOutflowValue += obj.getQuantity();
-          hasOutflowedAlready = true;
-        }
-      }
-
-      for (WrittenOffRecord obj : writtenOffRecords) {
-        if (obj.getWrittenOffAt().toLocalDate().equals(counter.toLocalDate())) {
-          currentOutflowValue += obj.getQuantity();
-          hasOutflowedAlready = true;
-        }
-      }
-
-      if (!hasOutflowedAlready) {
-        outflowValues.add(-1);
-      } else {
-        outflowValues.add(currentOutflowValue);
-      }
-
-      counter = startDate.plusDays(1);
+    // Инициализируем список, заполненный нулями
+    for (int i = 0; i < numberOfLastWeeks * 7; i++) {
+      outflowValues.add(0);
     }
 
+
+    // Проходимся по записям о продажах и дополняем список значениями
+    for (SoldRecord obj : soldRecords) {
+      period = Period.between(startDate, obj.getSoldAt().toLocalDate());
+      dayDifference = period.getDays();
+
+      outflowValues.set(dayDifference, outflowValues.get(dayDifference) + obj.getQuantity().intValue());
+    }
+
+
+    // Проходимся по записям о списаниях и дополняем список значениями
+    for (WrittenOffRecord obj : writtenOffRecords) {
+      period = Period.between(startDate, obj.getWrittenOffAt().toLocalDate());
+      dayDifference = period.getDays();
+
+      outflowValues.set(dayDifference, outflowValues.get(dayDifference) + obj.getQuantity().intValue());
+    }
+
+
+    // Удаляем лишние нули (от начала и до встречи первого ненулевого числа)
+    if (soldRecords.isEmpty()) {
+
+      // Записей нет - список пустой
+      if (writtenOffRecords.isEmpty()) {
+        outflowValues.clear();
+        return outflowValues;
+      }
+
+      // Есть только writtenOffRecords - удаляем нули до первой его даты
+      else {
+        period = Period.between(startDate, writtenOffRecords.get(0).getWrittenOffAt().toLocalDate());
+      }
+    }
+
+    else {
+
+      // Есть только soldRecords - удаляем нули до первой его даты
+      if (writtenOffRecords.isEmpty()) {
+        period = Period.between(startDate, soldRecords.get(0).getSoldAt().toLocalDate());
+      }
+
+      // Есть оба типа записей - сравниваем и находим самую раннюю дату, удаляем нули до неё
+      else {
+        if (soldRecords.get(0).getSoldAt().isAfter(writtenOffRecords.get(0).getWrittenOffAt())) {
+          period = Period.between(startDate, writtenOffRecords.get(0).getWrittenOffAt().toLocalDate());
+        }
+
+        else {
+          period = Period.between(startDate, soldRecords.get(0).getSoldAt().toLocalDate());
+        }
+
+      }
+    }
+
+    dayDifference = period.getDays();
+    outflowValues.subList(0, dayDifference + 1).clear();
+    
 
     return outflowValues;
   }
@@ -89,9 +123,7 @@ public class PredictionServiceImpl implements PredictionService {
     List<Integer> outflowValues = collectOutflowData(productId, numberOfLastWeeks);
 
 
-    // Удаляем лишние данные. Если ничего не осталось, значит, нечего анализировать - сразу возвращаем соответствующий результат.
-    outflowValues.removeIf(element -> element.equals(-1));
-
+    // Если список пустой, то и анализировать нечего
     if (outflowValues.isEmpty()) {
       predictionDataDTO.setWeeksAnalyzed(0);
       predictionDataDTO.setMonthsAnalyzed(0);
@@ -205,10 +237,5 @@ public class PredictionServiceImpl implements PredictionService {
 
     // Проводим округление до целого значения в большую сторону
     return (int) Math.ceil(forecast);
-  }
-
-  @Override
-  public Boolean isDateBetween(LocalDateTime dateTime, LocalDateTime startDate, LocalDateTime endDate) {
-    return !dateTime.isBefore(startDate) && !dateTime.isAfter(endDate);
   }
 }
