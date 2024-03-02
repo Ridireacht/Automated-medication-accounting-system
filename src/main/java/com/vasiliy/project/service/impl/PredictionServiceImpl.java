@@ -77,7 +77,6 @@ public class PredictionServiceImpl implements PredictionService {
     return outflowValues;
   }
 
-
   @Override
   public PredictionDataDTO getPredictionDTO(Long productId, Long numberOfLastWeeks) {
     PredictionDataDTO predictionDataDTO = new PredictionDataDTO();
@@ -85,12 +84,6 @@ public class PredictionServiceImpl implements PredictionService {
 
     // Собираем данные о расходе товара за последние numberOfLastWeeks недель
     List<Integer> outflowValues = collectOutflowData(productId, numberOfLastWeeks);
-
-
-    // Подсчитываем количество дней, когда расход товара ещё не начал осуществляться
-    long countMinusOnes = outflowValues.stream()
-        .filter(element -> element.equals(-1))
-        .count();
 
 
     // Удаляем лишние данные, добиваем число дней до кратного 7, если необходимо (т.к. метод использует недели)
@@ -106,17 +99,27 @@ public class PredictionServiceImpl implements PredictionService {
     Collections.reverse(outflowValues);
 
 
-    // Указываем количество проанализированных недель и точность прогноза (соотношение кол-ва необходимых недель к реально проанализированным)
-    predictionDataDTO.setNumberOfWeeksAnalyzed(outflowValues.size() / 7);
-    predictionDataDTO.setPrecision(1.0 * predictionDataDTO.getNumberOfWeeksAnalyzed() / numberOfLastWeeks);
+    // Указываем точность прогноза (соотношение кол-ва необходимых недель к реально проанализированным)
+    predictionDataDTO.setPrecision(1.0 * (outflowValues.size() / 7) / numberOfLastWeeks);
 
 
-
+    // Проводим прогнозирование на следующую неделю и на следующий месяц
+    predictionDataDTO.setNextWeekOutflowPrediction(getNextWeekPrediction(outflowValues));
+    predictionDataDTO.setNextMonthOutflowPrediction(getNextMonthPrediction(outflowValues));
 
 
     return predictionDataDTO;
   }
 
+  @Override
+  public Long getNextWeekPrediction(List<Integer> outflowValues) {
+    return null;
+  }
+
+  @Override
+  public Long getNextMonthPrediction(List<Integer> outflowValues) {
+    return null;
+  }
 
   @Override
   public Boolean isDateBetween(LocalDateTime dateTime, LocalDateTime startDate, LocalDateTime endDate) {

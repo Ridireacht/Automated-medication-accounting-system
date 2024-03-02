@@ -8,5 +8,6 @@ import lombok.Setter;
 public class PredictionDataDTO {
 
   private Double precision;
-  private Integer numberOfWeeksAnalyzed;
+  private Long nextWeekOutflowPrediction;
+  private Long nextMonthOutflowPrediction;
 }
