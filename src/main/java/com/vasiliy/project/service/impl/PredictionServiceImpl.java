@@ -8,6 +8,7 @@ import com.vasiliy.project.repository.WrittenOffRecordRepository;
 import com.vasiliy.project.service.PredictionService;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -92,9 +93,22 @@ public class PredictionServiceImpl implements PredictionService {
         .count();
 
 
-    // Удаляем лишние данные, высчитываем точность прогноза
+    // Удаляем лишние данные, добиваем число дней до кратного 7, если необходимо (т.к. метод использует недели)
     outflowValues.removeIf(element -> element.equals(-1));
-    predictionDataDTO.setPrecision(1.0 - (countMinusOnes / (numberOfLastWeeks * 7)));
+
+    long missingDays = outflowValues.size() % 7;
+    Collections.reverse(outflowValues);
+
+    for (int i = 0; i < missingDays; i++) {
+      outflowValues.add(0);
+    }
+
+    Collections.reverse(outflowValues);
+
+
+    // Указываем количество проанализированных недель и точность прогноза (соотношение кол-ва необходимых недель к реально проанализированным)
+    predictionDataDTO.setNumberOfWeeksAnalyzed(outflowValues.size() / 7);
+    predictionDataDTO.setPrecision(1.0 * predictionDataDTO.getNumberOfWeeksAnalyzed() / numberOfLastWeeks);
 
 
 
