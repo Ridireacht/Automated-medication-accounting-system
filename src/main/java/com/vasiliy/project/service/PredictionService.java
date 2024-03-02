@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface PredictionService {
 
-  List<Integer> collectOutflowData(Long productId, Long numberOfLastWeeks);
+  List<Integer> collectOutflowData(Long productId, Integer numberOfLastWeeks);
 
-  PredictionDataDTO getPredictionDTO(Long productId, Long numberOfLastWeeks);
+  PredictionDataDTO getPredictionDTO(Long productId, Integer numberOfLastWeeks);
 
   Integer getNextWeekPrediction(List<Integer> weekOutflowValues);
 

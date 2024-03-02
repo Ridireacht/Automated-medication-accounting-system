@@ -22,7 +22,7 @@ public class PredictionServiceImpl implements PredictionService {
 
 
   @Override
-  public List<Integer> collectOutflowData(Long productId, Long numberOfLastWeeks) {
+  public List<Integer> collectOutflowData(Long productId, Integer numberOfLastWeeks) {
     int currentOutflowValue;
     boolean hasOutflowedAlready = false;
     List<Integer> outflowValues = new ArrayList<>();
@@ -78,7 +78,7 @@ public class PredictionServiceImpl implements PredictionService {
   }
 
   @Override
-  public PredictionDataDTO getPredictionDTO(Long productId, Long numberOfLastWeeks) {
+  public PredictionDataDTO getPredictionDTO(Long productId, Integer numberOfLastWeeks) {
     int currentOutflowValue;
     List<Integer> weekOutflowValues = new ArrayList<>();
     List<Integer> monthOutflowValues = new ArrayList<>();
