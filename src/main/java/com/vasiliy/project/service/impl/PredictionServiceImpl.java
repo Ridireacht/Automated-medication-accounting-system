@@ -1,5 +1,6 @@
 package com.vasiliy.project.service.impl;
 
+import com.vasiliy.project.dto.info.PredictionDataDTO;
 import com.vasiliy.project.entity.records.SoldRecord;
 import com.vasiliy.project.entity.records.WrittenOffRecord;
 import com.vasiliy.project.repository.SoldRecordRepository;
@@ -22,6 +23,7 @@ public class PredictionServiceImpl implements PredictionService {
   @Override
   public List<Integer> collectOutflowData(Long productId, Long numberOfLastWeeks) {
     int currentOutflowValue;
+    boolean hasOutflowedAlready = false;
     List<Integer> outflowValues = new ArrayList<>();
 
 
@@ -50,22 +52,40 @@ public class PredictionServiceImpl implements PredictionService {
       for (SoldRecord obj : soldRecords) {
         if (obj.getSoldAt().toLocalDate().equals(counter.toLocalDate())) {
           currentOutflowValue += obj.getQuantity();
+          hasOutflowedAlready = true;
         }
       }
 
       for (WrittenOffRecord obj : writtenOffRecords) {
         if (obj.getWrittenOffAt().toLocalDate().equals(counter.toLocalDate())) {
           currentOutflowValue += obj.getQuantity();
+          hasOutflowedAlready = true;
         }
       }
 
-      outflowValues.add(currentOutflowValue);
+      if (!hasOutflowedAlready) {
+        outflowValues.add(-1);
+      } else {
+        outflowValues.add(currentOutflowValue);
+      }
+
       counter = startDate.plusDays(1);
     }
 
 
     return outflowValues;
   }
+
+
+  @Override
+  public PredictionDataDTO getPredictionDTO(Long productId, Long numberOfLastWeeks) {
+    List<Integer> outflowValues = collectOutflowData(productId, numberOfLastWeeks);
+
+
+
+    return null;
+  }
+
 
   @Override
   public Boolean isDateBetween(LocalDateTime dateTime, LocalDateTime startDate, LocalDateTime endDate) {
