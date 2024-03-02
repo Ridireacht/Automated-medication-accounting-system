@@ -79,6 +79,9 @@ public class PredictionServiceImpl implements PredictionService {
 
   @Override
   public PredictionDataDTO getPredictionDTO(Long productId, Long numberOfLastWeeks) {
+    int currentOutflowValue;
+    List<Integer> weekOutflowValues = new ArrayList<>();
+    List<Integer> monthOutflowValues = new ArrayList<>();
     PredictionDataDTO predictionDataDTO = new PredictionDataDTO();
 
 
@@ -86,9 +89,20 @@ public class PredictionServiceImpl implements PredictionService {
     List<Integer> outflowValues = collectOutflowData(productId, numberOfLastWeeks);
 
 
-    // Удаляем лишние данные, добиваем число дней до кратного 7, если необходимо (т.к. метод использует недели)
+    // Удаляем лишние данные. Если ничего не осталось, значит, нечего анализировать - сразу возвращаем соответствующий результат.
     outflowValues.removeIf(element -> element.equals(-1));
 
+    if (outflowValues.isEmpty()) {
+      predictionDataDTO.setWeeksAnalyzed(0);
+      predictionDataDTO.setMonthsAnalyzed(0);
+      predictionDataDTO.setNextWeekOutflowPrediction(0);
+      predictionDataDTO.setNextMonthOutflowPrediction(0);
+
+      return predictionDataDTO;
+    }
+
+
+    // Добиваем число дней до кратного 7, если необходимо (т.к. метод использует недели)
     long missingDays = outflowValues.size() % 7;
     Collections.reverse(outflowValues);
 
@@ -99,26 +113,98 @@ public class PredictionServiceImpl implements PredictionService {
     Collections.reverse(outflowValues);
 
 
-    // Указываем точность прогноза (соотношение кол-ва необходимых недель к реально проанализированным)
-    predictionDataDTO.setPrecision(1.0 * (outflowValues.size() / 7) / numberOfLastWeeks);
+    // Собираем список расхода товаров по неделям.
+    // Проход по неделям
+    for (int i = 0; i < outflowValues.size() / 7; i++) {
+      currentOutflowValue = 0;
+
+      // Проход по дням в неделе
+      for (int j = 0; j < 7; j++) {
+        currentOutflowValue += outflowValues.get(i * 7 + j);
+      }
+
+      weekOutflowValues.add(currentOutflowValue);
+    }
 
 
-    // Проводим прогнозирование на следующую неделю и на следующий месяц
-    predictionDataDTO.setNextWeekOutflowPrediction(getNextWeekPrediction(outflowValues));
-    predictionDataDTO.setNextMonthOutflowPrediction(getNextMonthPrediction(outflowValues));
+    // Пытаемся собрать список расхода товаров по месяцам. Если недель меньше 4, то список будет пустым.
+    // Проход по месяцам
+    for (int i = 1; i <= weekOutflowValues.size() / 4; i++) {
+      currentOutflowValue = 0;
+
+      // Проход по неделям в месяце
+      for (int j = 0; j < 4; j++) {
+        currentOutflowValue += outflowValues.get((i-1) * 4 + j);
+      }
+
+      monthOutflowValues.add(currentOutflowValue);
+    }
+
+
+    // Указываем количество проанализированных недель и месяцев
+    predictionDataDTO.setWeeksAnalyzed(weekOutflowValues.size());
+    predictionDataDTO.setMonthsAnalyzed(monthOutflowValues.size());
+
+
+    // Проводим прогнозирование на следующую неделю
+    predictionDataDTO.setNextWeekOutflowPrediction(getNextWeekPrediction(weekOutflowValues));
+
+
+    // Проводим прогнозирование на следующий месяц (если накопилось данных хотя бы на месяц)
+    if (!monthOutflowValues.isEmpty()) {
+      predictionDataDTO.setNextMonthOutflowPrediction(getNextMonthPrediction(monthOutflowValues));
+    } else {
+      predictionDataDTO.setNextMonthOutflowPrediction(0);
+    }
 
 
     return predictionDataDTO;
   }
 
   @Override
-  public Long getNextWeekPrediction(List<Integer> outflowValues) {
-    return null;
+  public Integer getNextWeekPrediction(List<Integer> weekOutflowValues) {
+    int outflowValue;
+
+
+    // Параметр сглаживания (чем выше, тем больший вес имеют более новые значения, и тем меньший - существующий прогноз)
+    double alpha = 0.3;
+
+    // Вычисляем начальное значение прогноза
+    double forecast = weekOutflowValues.get(0);
+
+
+    // Применяем метод экспоненциального сглаживания для прогнозирования на следующую неделю
+    for (int i = 1; i < weekOutflowValues.size(); i++) {
+      outflowValue = weekOutflowValues.get(i);
+      forecast = alpha * outflowValue + (1 - alpha) * forecast;
+    }
+
+
+    // Проводим округление до целого значения в большую сторону
+    return (int) Math.ceil(forecast);
   }
 
   @Override
-  public Long getNextMonthPrediction(List<Integer> outflowValues) {
-    return null;
+  public Integer getNextMonthPrediction(List<Integer> monthOutflowValues) {
+    int outflowValue;
+
+
+    // Параметр сглаживания (чем выше, тем больший вес имеют более новые значения, и тем меньший - существующий прогноз)
+    double alpha = 0.3;
+
+    // Вычисляем начальное значение прогноза
+    double forecast = monthOutflowValues.get(0);
+
+
+    // Применяем метод экспоненциального сглаживания для прогнозирования на следующий месяц
+    for (int i = 1; i < monthOutflowValues.size(); i++) {
+      outflowValue = monthOutflowValues.get(i);
+      forecast = alpha * outflowValue + (1 - alpha) * forecast;
+    }
+
+
+    // Проводим округление до целого значения в большую сторону
+    return (int) Math.ceil(forecast);
   }
 
   @Override

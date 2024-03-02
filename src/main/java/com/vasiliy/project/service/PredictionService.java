@@ -10,9 +10,9 @@ public interface PredictionService {
 
   PredictionDataDTO getPredictionDTO(Long productId, Long numberOfLastWeeks);
 
-  Long getNextWeekPrediction(List<Integer> outflowValues);
+  Integer getNextWeekPrediction(List<Integer> weekOutflowValues);
 
-  Long getNextMonthPrediction(List<Integer> outflowValues);
+  Integer getNextMonthPrediction(List<Integer> monthOutflowValues);
 
   Boolean isDateBetween(LocalDateTime dateTime, LocalDateTime startDate, LocalDateTime endDate);
 }
