@@ -38,11 +38,11 @@ public class PredictionServiceImpl implements PredictionService {
 
 
     // Получаем записи о продажах конкретного товара в заданный период
-    List<SoldRecord> soldRecords = soldRecordRepository.findAllByProductIdAndBetweenDates(productId, endDateTime, startDateTime);
+    List<SoldRecord> soldRecords = soldRecordRepository.findAllByProductIdAndBetweenDates(productId, startDateTime, endDateTime);
 
 
     // Получаем записи о списаниях конкретного товара в заданный период
-    List<WrittenOffRecord> writtenOffRecords = writtenOffRecordRepository.findAllByProductIdAndBetweenDates(productId, endDateTime, startDateTime);
+    List<WrittenOffRecord> writtenOffRecords = writtenOffRecordRepository.findAllByProductIdAndBetweenDates(productId, startDateTime, endDateTime);
 
 
     // Инициализируем список, заполненный нулями
@@ -106,7 +106,7 @@ public class PredictionServiceImpl implements PredictionService {
 
     dayDifference = period.getDays();
     outflowValues.subList(0, dayDifference + 1).clear();
-    
+
 
     return outflowValues;
   }
