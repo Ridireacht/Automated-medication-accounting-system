@@ -19,10 +19,10 @@
 <div style="margin-top: 60px;"></div>
 
 <div class="add-form">
-  <p>Количество проанализированных недель:</p>
-  <p>Количество проанализированных месяцев:</p>
-  <p>Прогноз расхода товара на следующую неделю:</p>
-  <p>Прогноз расхода товара на следующий месяц:</p>
+  <p>Количество проанализированных недель: <span id="weeksAnalyzed"></span></p>
+  <p>Количество проанализированных месяцев: <span id="monthsAnalyzed"></span></p>
+  <p>Прогноз расхода товара на следующую неделю: <span id="nextWeekOutflowPrediction"></span> штук</p>
+  <p>Прогноз расхода товара на следующий месяц: <span id="nextMonthOutflowPrediction"></span> штук</p>
 </div>
 
 <div style="text-align: center;">
@@ -30,7 +30,33 @@
 </div>
 
 <script>
+  function getPredictionData() {
+    var productId = document.getElementById("product-id").value;
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                document.getElementById('weeksAnalyzed').textContent = response.weeksAnalyzed;
+                document.getElementById('monthsAnalyzed').textContent = response.monthsAnalyzed;
+                document.getElementById('nextWeekOutflowPrediction').textContent = response.nextWeekOutflowPrediction;
+                document.getElementById('nextMonthOutflowPrediction').textContent = response.nextMonthOutflowPrediction;
+            } else {
+                console.error('Ошибка при выполнении запроса:', xhr.status);
+            }
+        }
+    };
+    xhr.open('GET', '/prediction/' + productId);
+    xhr.send();
+  }
 
+  document.addEventListener("DOMContentLoaded", function() {
+    getPredictionData();
+  });
+
+  document.getElementById('product-id').addEventListener('change', function() {
+    getPredictionData();
+  });
 </script>
 </body>
 </html>
