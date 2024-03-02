@@ -7,5 +7,27 @@
 </head>
 <body>
 
+<h1 style="text-align: center;">Прогнозирование потребности в товарах</h1>
+
+<div class="add-form">
+  <label for="product-id">Выберите товар, для которого нужно произвести прогнозирование:</label><br>
+  <select id="product-id">
+    <option th:each="product : ${products}" th:value="${product.id}" th:text="${product.name}"></option>
+  </select><br><br>
+</div>
+
+<div style="margin-top: 60px;"></div>
+
+<div class="add-form">
+  <p>Поле 1: значение1</p>
+  <p>Поле 2: значение2</p>
+  <p>Поле 3: значение3</p>
+  <p>Поле 4: значение4</p>
+</div>
+
+<div style="text-align: center;">
+  <a href="/home" class="home-button">Домой</a>
+</div>
+
 </body>
 </html>
