@@ -68,4 +68,10 @@ public class PageController {
     model.addAttribute("writtenOffRecords", storageProductService.getAllWrittenOffRecords());
     return "written-off";
   }
+
+  @GetMapping("/prediction")
+  public String getPrediction(Model model) {
+    model.addAttribute("products", productService.getAllProducts());
+    return "prediction";
+  }
 }
