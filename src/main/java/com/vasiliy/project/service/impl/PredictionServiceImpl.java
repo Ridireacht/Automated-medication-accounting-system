@@ -24,7 +24,7 @@ public class PredictionServiceImpl implements PredictionService {
 
 
   @Override
-  public List<Integer> collectOutflowData(Long productId, Integer numberOfLastWeeks) {
+  public List<Integer> collectOutflowValues(Long productId, Integer numberOfLastWeeks) {
     int dayDifference;
     List<Integer> outflowValues = new ArrayList<>();
 
@@ -115,7 +115,7 @@ public class PredictionServiceImpl implements PredictionService {
 
 
     // Собираем данные о расходе товара за последние numberOfLastWeeks недель
-    List<Integer> outflowValues = collectOutflowData(productId, numberOfLastWeeks);
+    List<Integer> outflowValues = collectOutflowValues(productId, numberOfLastWeeks);
 
 
     // Если список пустой, то и анализировать нечего
