@@ -5,7 +5,6 @@ import com.vasiliy.project.exception.CustomBadRequestException;
 import com.vasiliy.project.repository.ProductRepository;
 import com.vasiliy.project.service.PredictionService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
