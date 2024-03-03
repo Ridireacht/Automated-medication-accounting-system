@@ -8,7 +8,7 @@ import com.vasiliy.project.repository.WrittenOffRecordRepository;
 import com.vasiliy.project.service.PredictionService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,13 +26,12 @@ public class PredictionServiceImpl implements PredictionService {
   @Override
   public List<Integer> collectOutflowData(Long productId, Integer numberOfLastWeeks) {
     int dayDifference;
-    Period period;
     List<Integer> outflowValues = new ArrayList<>();
 
 
     // Определяем временные пределы, в которых собираются данные
-    LocalDateTime endDateTime = LocalDateTime.now();
-    LocalDateTime startDateTime = endDateTime.minusWeeks(numberOfLastWeeks);
+    LocalDateTime endDateTime = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
+    LocalDateTime startDateTime = endDateTime.minusWeeks(numberOfLastWeeks).truncatedTo(ChronoUnit.DAYS);
 
     LocalDate startDate = startDateTime.toLocalDate();
 
@@ -53,17 +52,14 @@ public class PredictionServiceImpl implements PredictionService {
 
     // Проходимся по записям о продажах и дополняем список значениями
     for (SoldRecord obj : soldRecords) {
-      period = Period.between(startDate, obj.getSoldAt().toLocalDate());
-      dayDifference = period.getDays();
+      dayDifference = (int) ChronoUnit.DAYS.between(startDate, obj.getSoldAt().toLocalDate());
 
       outflowValues.set(dayDifference, outflowValues.get(dayDifference) + obj.getQuantity().intValue());
     }
 
-
     // Проходимся по записям о списаниях и дополняем список значениями
     for (WrittenOffRecord obj : writtenOffRecords) {
-      period = Period.between(startDate, obj.getWrittenOffAt().toLocalDate());
-      dayDifference = period.getDays();
+      dayDifference = (int) ChronoUnit.DAYS.between(startDate, obj.getWrittenOffAt().toLocalDate());
 
       outflowValues.set(dayDifference, outflowValues.get(dayDifference) + obj.getQuantity().intValue());
     }
@@ -80,7 +76,7 @@ public class PredictionServiceImpl implements PredictionService {
 
       // Есть только writtenOffRecords - удаляем нули до первой его даты
       else {
-        period = Period.between(startDate, writtenOffRecords.get(0).getWrittenOffAt().toLocalDate());
+        dayDifference = (int) ChronoUnit.DAYS.between(startDate, writtenOffRecords.get(0).getWrittenOffAt().toLocalDate());
       }
     }
 
@@ -88,24 +84,23 @@ public class PredictionServiceImpl implements PredictionService {
 
       // Есть только soldRecords - удаляем нули до первой его даты
       if (writtenOffRecords.isEmpty()) {
-        period = Period.between(startDate, soldRecords.get(0).getSoldAt().toLocalDate());
+        dayDifference = (int) ChronoUnit.DAYS.between(startDate, soldRecords.get(0).getSoldAt().toLocalDate());
       }
 
       // Есть оба типа записей - сравниваем и находим самую раннюю дату, удаляем нули до неё
       else {
         if (soldRecords.get(0).getSoldAt().isAfter(writtenOffRecords.get(0).getWrittenOffAt())) {
-          period = Period.between(startDate, writtenOffRecords.get(0).getWrittenOffAt().toLocalDate());
+          dayDifference = (int) ChronoUnit.DAYS.between(startDate, writtenOffRecords.get(0).getWrittenOffAt().toLocalDate());
         }
 
         else {
-          period = Period.between(startDate, soldRecords.get(0).getSoldAt().toLocalDate());
+          dayDifference = (int) ChronoUnit.DAYS.between(startDate, soldRecords.get(0).getSoldAt().toLocalDate());
         }
 
       }
     }
 
-    dayDifference = period.getDays();
-    outflowValues.subList(0, dayDifference + 1).clear();
+    outflowValues.subList(0, dayDifference).clear();
 
 
     return outflowValues;
@@ -135,10 +130,15 @@ public class PredictionServiceImpl implements PredictionService {
 
 
     // Добиваем число дней до кратного 7, если необходимо (т.к. метод использует недели)
-    long missingDays = outflowValues.size() % 7;
+    int additionalDaysNeeded = outflowValues.size();
+    while (additionalDaysNeeded >= 7) {
+      additionalDaysNeeded -= 7;
+    }
+    additionalDaysNeeded = 7 - additionalDaysNeeded;
+
     Collections.reverse(outflowValues);
 
-    for (int i = 0; i < missingDays; i++) {
+    for (int i = 0; i < additionalDaysNeeded; i++) {
       outflowValues.add(0);
     }
 
