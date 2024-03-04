@@ -8,19 +8,22 @@ import com.vasiliy.project.repository.WrittenOffRecordRepository;
 import com.vasiliy.project.service.PredictionService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class PredictionServiceImpl implements PredictionService {
 
   private final SoldRecordRepository soldRecordRepository;
   private final WrittenOffRecordRepository writtenOffRecordRepository;
+
+  private final PredictionDataDTO predictionDataDTO = new PredictionDataDTO();
 
 
   @Override
@@ -103,6 +106,27 @@ public class PredictionServiceImpl implements PredictionService {
     outflowValues.subList(0, dayDifference).clear();
 
 
+    // Сразу записываем результаты в респонс
+    predictionDataDTO.setOutflowValues(outflowValues);
+
+
+    // Высчитываем labels для вывода графика и записываем их в респонс
+    int additionalDaysNeeded = outflowValues.size();
+    while (additionalDaysNeeded >= 7) {
+      additionalDaysNeeded -= 7;
+    }
+    additionalDaysNeeded = 7 - additionalDaysNeeded;
+
+    LocalDate endDate = endDateTime.toLocalDate().minusDays(1);
+    LocalDate currentDate = endDate.minusDays(outflowValues.size() + additionalDaysNeeded - 1);
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+    while (!currentDate.isAfter(endDate)) {
+      predictionDataDTO.getLabels().add(currentDate.format(formatter));
+      currentDate = currentDate.plusDays(1);
+    }
+
+
     return outflowValues;
   }
 
@@ -111,7 +135,13 @@ public class PredictionServiceImpl implements PredictionService {
     int currentOutflowValue;
     List<Integer> weekOutflowValues = new ArrayList<>();
     List<Integer> monthOutflowValues = new ArrayList<>();
-    PredictionDataDTO predictionDataDTO = new PredictionDataDTO();
+
+    predictionDataDTO.setLabels(new ArrayList<>());
+    predictionDataDTO.setOutflowValues(new ArrayList<>());
+    predictionDataDTO.setWeeksAnalyzed(null);
+    predictionDataDTO.setMonthsAnalyzed(null);
+    predictionDataDTO.setNextWeekOutflowPrediction(null);
+    predictionDataDTO.setNextMonthOutflowPrediction(null);
 
 
     // Собираем данные о расходе товара за последние numberOfLastWeeks недель
@@ -124,6 +154,9 @@ public class PredictionServiceImpl implements PredictionService {
       predictionDataDTO.setMonthsAnalyzed(0);
       predictionDataDTO.setNextWeekOutflowPrediction(0);
       predictionDataDTO.setNextMonthOutflowPrediction(0);
+
+      predictionDataDTO.setLabels(new ArrayList<>());
+      predictionDataDTO.setOutflowValues(new ArrayList<>());
 
       return predictionDataDTO;
     }

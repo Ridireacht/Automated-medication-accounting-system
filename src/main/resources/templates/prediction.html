@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Прогнозирование потребности в товарах</title>
   <link rel="stylesheet" type="text/css" href="/css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
@@ -24,6 +25,10 @@
   <hr>
   <p>Количество проанализированных месяцев: <span id="monthsAnalyzed"></span></p>
   <p>Прогноз расхода товара на следующий месяц: <span id="nextMonthOutflowPrediction"></span> штук</p>
+  <br><br><br>
+  <div id="chart-container">
+    <canvas id="outflow-chart"></canvas>
+  </div>
 </div>
 
 <div style="text-align: center;">
@@ -31,6 +36,8 @@
 </div>
 
 <script>
+  var myChart;
+
   function getPredictionData() {
     var productId = document.getElementById("product-id").value;
     var xhr = new XMLHttpRequest();
@@ -42,6 +49,33 @@
                 document.getElementById('monthsAnalyzed').textContent = response.monthsAnalyzed;
                 document.getElementById('nextWeekOutflowPrediction').textContent = response.nextWeekOutflowPrediction;
                 document.getElementById('nextMonthOutflowPrediction').textContent = response.nextMonthOutflowPrediction;
+
+                if (myChart) {
+                    myChart.destroy();
+                }
+
+                var ctx = document.getElementById('outflow-chart').getContext('2d');
+                myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: response.labels,
+                        datasets: [{
+                            label: 'Расход товара',
+                            data: response.outflowValues,
+                            borderColor: 'rgb(75, 192, 192)',
+                            tension: 0.1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+
+                myChart.update();
             } else {
                 console.error('Ошибка при выполнении запроса:', xhr.status);
             }
@@ -51,9 +85,11 @@
     xhr.send();
   }
 
+
   document.addEventListener("DOMContentLoaded", function() {
     getPredictionData();
   });
+
 
   document.getElementById('product-id').addEventListener('change', function() {
     getPredictionData();
