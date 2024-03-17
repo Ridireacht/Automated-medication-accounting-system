@@ -7,9 +7,10 @@ import com.vasiliy.project.mapper.SupplierMapper;
 import com.vasiliy.project.repository.SupplierRepository;
 import com.vasiliy.project.service.SupplierService;
 import jakarta.transaction.Transactional;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @AllArgsConstructor

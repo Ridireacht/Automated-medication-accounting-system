@@ -6,6 +6,9 @@ import com.vasiliy.project.entity.records.WrittenOffRecord;
 import com.vasiliy.project.repository.SoldRecordRepository;
 import com.vasiliy.project.repository.WrittenOffRecordRepository;
 import com.vasiliy.project.service.PredictionService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -13,8 +16,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor

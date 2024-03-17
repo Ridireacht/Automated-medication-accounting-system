@@ -10,9 +10,10 @@ import com.vasiliy.project.repository.ProductRepository;
 import com.vasiliy.project.repository.StorageProductRepository;
 import com.vasiliy.project.service.ProductService;
 import jakarta.transaction.Transactional;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @AllArgsConstructor

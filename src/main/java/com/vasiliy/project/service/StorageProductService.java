@@ -6,6 +6,7 @@ import com.vasiliy.project.entity.StorageProduct;
 import com.vasiliy.project.entity.records.InflowRecord;
 import com.vasiliy.project.entity.records.SoldRecord;
 import com.vasiliy.project.entity.records.WrittenOffRecord;
+
 import java.util.List;
 
 public interface StorageProductService {

@@ -3,6 +3,7 @@ package com.vasiliy.project.service;
 import com.vasiliy.project.dto.info.ProductDTO;
 import com.vasiliy.project.dto.info.UpdateRequest;
 import com.vasiliy.project.entity.info.Product;
+
 import java.util.List;
 
 public interface ProductService {
