@@ -7,5 +7,5 @@ import java.util.List;
 public interface CategoryService {
   List<Category> getAllCategories();
 
-  List<Category> getAllCategoriesWithoutNbsp();
+  List<Category> getAllCategoriesWithNbsp();
 }

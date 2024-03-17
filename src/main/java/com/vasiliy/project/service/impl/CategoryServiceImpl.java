@@ -21,13 +21,23 @@ public class CategoryServiceImpl implements CategoryService {
   }
 
   @Override
-  public List<Category> getAllCategoriesWithoutNbsp() {
+  public List<Category> getAllCategoriesWithNbsp() {
     List<Category> categories = categoryRepository.findAll();
 
     for (Category category : categories) {
-      category.setName(category.getName().replace("&nbsp", ""));
+      int occurences = countOccurrences(category.getCode(), "-");
+
+      String nbsps = "&nbsp;";
+      nbsps = nbsps.repeat(occurences);
+
+      category.setName(nbsps + category.getName());
     }
 
     return categories;
+  }
+
+
+  public static int countOccurrences(String text, String pattern) {
+    return text.split(pattern, -1).length - 1;
   }
 }

@@ -26,7 +26,7 @@ public class PageController {
 
   @GetMapping("/categories")
   public String getCategories(Model model) {
-    model.addAttribute("categories", categoryService.getAllCategoriesWithoutNbsp());
+    model.addAttribute("categories", categoryService.getAllCategories());
     return "categories";
   }
 
@@ -38,7 +38,7 @@ public class PageController {
 
   @GetMapping("/products")
   public String getProducts(Model model) {
-    model.addAttribute("categories", categoryService.getAllCategories());
+    model.addAttribute("categories", categoryService.getAllCategoriesWithNbsp());
     model.addAttribute("products", productService.getAllProducts());
     return "products";
   }
