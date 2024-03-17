@@ -2,26 +2,17 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Справочник категорий товаров</title>
+  <title>Справочник фармакологических групп</title>
   <link rel="stylesheet" type="text/css" href="/css/styles.css">
 </head>
 <body>
 
-<h1 style="text-align: center;">Справочник категорий товаров</h1>
-
-<div class="add-form">
-  <h2>Добавить новую категорию</h2>
-  <form id="add-form">
-    <label for="category-name">Название категории</label><br>
-    <input type="text" id="category-name"><br><br>
-    <button type="submit">Добавить</button>
-  </form>
-</div>
+<h1 style="text-align: center;">Справочник фармакологических групп</h1>
 
 <div style="margin-top: 60px;"></div>
 
 <div>
-  <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Поиск по полям категории...">
+  <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Поиск по полям фармакологической группы...">
 </div>
 
 <div style="margin-top: 20px;"></div>
@@ -30,15 +21,15 @@
   <thead>
   <tr>
     <th onclick="sortTable(0)">ID</th>
-    <th onclick="sortTable(1)">Название</th>
-    <th>Действия</th>
+    <th onclick="sortTable(1)">Полный код</th>
+    <th onclick="sortTable(2)">Название фармакологической группы</th>
   </tr>
   </thead>
   <tbody>
   <tr th:each="category : ${categories}">
     <td th:text="${category.id}"></td>
-    <td th:text="${category.name}" ondblclick="enableEdit(this, '/categories/', 'name')"></td>
-    <td><button class="delete-button" onclick="deleteRecord(this, '/categories/')">Удалить</button></td>
+    <td th:text="${category.code}"></td>
+    <td th:text="${category.name}"></td>
   </tr>
   </tbody>
 </table>
@@ -48,18 +39,6 @@
 </div>
 
 <script src="/js/common.js"></script>
-<script>
-  document.getElementById("add-form").addEventListener("submit", function(event) {
-    event.preventDefault();
 
-    var categoryName = document.getElementById("category-name").value.trim();
-
-    var requestBody = {
-      name: categoryName
-    };
-
-    sendPostRequest(requestBody, '/categories');
-  });
-</script>
 </body>
 </html>
