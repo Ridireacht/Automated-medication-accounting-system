@@ -33,6 +33,9 @@ public class Product {
   @Column(name = "is_vital")
   private Boolean isVital;
 
+  @Column(name = "is_prescriptive")
+  private Boolean isPrescriptive;
+
 
   @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
   private List<StorageProduct> storageProducts;

@@ -64,6 +64,7 @@ public class ProductServiceImpl implements ProductService {
           product.setExpirationDays(Long.valueOf(updateRequest.getValue()));
         }
         case "isVital" -> product.setIsVital(updateRequest.getValue().equals("true"));
+        case "isPrescriptive" -> product.setIsPrescriptive(updateRequest.getValue().equals("true"));
       }
 
       productRepository.save(product);

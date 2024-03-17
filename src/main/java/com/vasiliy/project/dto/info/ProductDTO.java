@@ -25,4 +25,7 @@ public class ProductDTO {
 
   @NotNull
   private Boolean isVital;
+
+  @NotNull
+  private Boolean isPrescriptive;
 }

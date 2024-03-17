@@ -25,7 +25,9 @@
     <label for="expiration-days">Срок годности товара (в днях)</label><br>
     <input type="number" id="expiration-days"><br><br>
     <label for="is-vital">Входит ли товар в перечень ЖНВЛП?</label>
-    <input type="checkbox" id="is-vital" style="transform: scale(1.1);"><br><br><br>
+    <input type="checkbox" id="is-vital" style="transform: scale(1.1);"><br><br>
+    <label for="is-prescriptive">Является ли товар рецептурным?</label>
+    <input type="checkbox" id="is-prescriptive" style="transform: scale(1.1);"><br><br><br>
     <button type="submit">Добавить</button>
   </form>
 </div>
@@ -47,6 +49,7 @@
     <th onclick="sortTable(3)">Лекарственная форма</th>
     <th onclick="sortTable(4)">Срок годности (дни)</th>
     <th onclick="sortTable(5)">ЖНВЛП?</th>
+    <th onclick="sortTable(6)">Рецептурный?</th>
     <th>Действия</th>
   </tr>
   </thead>
@@ -71,6 +74,12 @@
         <option th:value="false" th:text="Нет" th:selected="${!product.isVital}"></option>
       </select>
     </td>
+    <td>
+      <select onchange="updateSelected(this, '/products/', 'isPrescriptive')">
+        <option th:value="true" th:text="Да" th:selected="${product.isPrescriptive}"></option>
+        <option th:value="false" th:text="Нет" th:selected="${!product.isPrescriptive}"></option>
+      </select>
+    </td>
     <td><button class="delete-button" onclick="deleteRecord(this, '/products/')">Удалить</button></td>
   </tr>
   </tbody>
@@ -90,13 +99,15 @@
     var productFormId = document.getElementById("form-id").value;
     var productExpirationDays = document.getElementById("expiration-days").value;
     var productIsVital = document.getElementById("is-vital").checked.toString();
+    var productIsPrescriptive = document.getElementById("is-prescriptive").checked.toString();
 
     var requestBody = {
       name: productName,
       categoryId: productCategoryId,
       formId: productFormId,
       expirationDays: productExpirationDays,
-      isVital: productIsVital
+      isVital: productIsVital,
+      isPrescriptive: productIsPrescriptive
     };
 
     sendPostRequest(requestBody, '/products');
