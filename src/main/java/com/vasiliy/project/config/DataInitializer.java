@@ -227,7 +227,6 @@ public class DataInitializer implements CommandLineRunner {
             categories.add(new Category("0100-0040-0010", "НПВС — Производные уксусной кислоты и родственные соединения в комбинациях"));
             categories.add(new Category("0100-0070", "НПВС — Фенаматы"));
             categories.add(new Category("0100-0200", "Прочие ненаркотические анальгетики, включая нестероидные и другие противовоспалительные средства"));
-            categories.add(new Category("0100-0200-0010", "Прочие ненаркотические анальгетики, включая нестероидные и другие противовоспалительные средства, в комбинациях"));
 
             categories.add(new Category("0110", "Органотропные средства"));
             categories.add(new Category("0110-0010", "Дерматотропные средства"));
@@ -311,7 +310,6 @@ public class DataInitializer implements CommandLineRunner {
             categories.add(new Category("0110-0060-0020", "Контрацептивы негормональные"));
             categories.add(new Category("0110-0060-0030", "Регуляторы потенции"));
             categories.add(new Category("0110-0060-0040", "Средства, влияющие на обмен веществ в предстательной железе, и корректоры уродинамики"));
-            categories.add(new Category("0110-0060-0040-0010", "Средства, влияющие на обмен веществ в предстательной железе, и корректоры уродинамики в комбинациях"));
             categories.add(new Category("0110-0060-0050", "Токолитики"));
             categories.add(new Category("0110-0060-0060", "Утеротоники"));
 
@@ -342,7 +340,6 @@ public class DataInitializer implements CommandLineRunner {
             categories.add(new Category("0120-0020", "Антисептики и дезинфицирующие средства"));
             categories.add(new Category("0120-0020-0010", "Антисептики и дезинфицирующие средства в комбинациях"));
             categories.add(new Category("0120-0090", "Другие противомикробные, противопаразитарные и противоглистные средства"));
-            categories.add(new Category("0120-0090-0010", "Другие противомикробные, противопаразитарные и противоглистные средства в комбинациях"));
             categories.add(new Category("0120-0030", "Противовирусные средства"));
             categories.add(new Category("0120-0030-0005", "Противовирусные (за исключением ВИЧ) средства"));
             categories.add(new Category("0120-0030-0005-0010", "Противовирусные (за исключением ВИЧ) средства в комбинациях"));
@@ -383,7 +380,6 @@ public class DataInitializer implements CommandLineRunner {
             categories.add(new Category("0160-0050", "Радиопрофилактические и радиотерапевтические средства"));
             categories.add(new Category("0160-0080", "Склерозирующие средства"));
             categories.add(new Category("0160-0090", "Средства для коррекции нарушений при алкоголизме, токсико- и наркомании"));
-            categories.add(new Category("0160-0090-0010", "Средства для коррекции нарушений при алкоголизме, токсико- и наркомании в комбинациях"));
 
             categoryRepository.saveAll(categories);
         }
