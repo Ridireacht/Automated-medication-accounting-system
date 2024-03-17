@@ -438,7 +438,7 @@ public class DataInitializer implements CommandLineRunner {
             accountingTypes.add(new AccountingType("Нет"));
             accountingTypes.add(new AccountingType("Группа 1 (наркотические и психотропные в-ва)"));
             accountingTypes.add(new AccountingType("Группа 2 (сильнодействующие и ядовитые в-ва)"));
-            accountingTypes.add(new AccountingType("Группа 3 (комбинированные с наркотическими или психотропными в-вами"));
+            accountingTypes.add(new AccountingType("Группа 3 (комбинированные с наркотическими или психотропными в-вами)"));
             accountingTypes.add(new AccountingType("Группа 4 (иные)"));
 
             accountingTypeRepository.saveAll(accountingTypes);

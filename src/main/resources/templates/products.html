@@ -107,6 +107,7 @@
     var productName = document.getElementById("product-name").value.trim();
     var productCategoryId = document.getElementById("category-id").value;
     var productFormId = document.getElementById("form-id").value;
+    var productAccountingTypeId = document.getElementById("accounting-type-id").value;
     var productExpirationDays = document.getElementById("expiration-days").value;
     var productIsVital = document.getElementById("is-vital").checked.toString();
     var productIsPrescriptive = document.getElementById("is-prescriptive").checked.toString();
@@ -115,6 +116,7 @@
       name: productName,
       categoryId: productCategoryId,
       formId: productFormId,
+      accountingTypeId: productAccountingTypeId,
       expirationDays: productExpirationDays,
       isVital: productIsVital,
       isPrescriptive: productIsPrescriptive
