@@ -26,7 +26,7 @@ public class PageController {
 
   @GetMapping("/categories")
   public String getCategories(Model model) {
-    model.addAttribute("categories", categoryService.getAllCategories());
+    model.addAttribute("categories", categoryService.getAllCategoriesWithoutNbsp());
     return "categories";
   }
 

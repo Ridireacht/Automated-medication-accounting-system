@@ -19,4 +19,15 @@ public class CategoryServiceImpl implements CategoryService {
   public List<Category> getAllCategories() {
     return categoryRepository.findAll();
   }
+
+  @Override
+  public List<Category> getAllCategoriesWithoutNbsp() {
+    List<Category> categories = categoryRepository.findAll();
+
+    for (Category category : categories) {
+      category.setName(category.getName().replace("&nbsp", ""));
+    }
+
+    return categories;
+  }
 }
