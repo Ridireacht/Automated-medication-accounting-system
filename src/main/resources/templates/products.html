@@ -18,8 +18,10 @@
     <select id="category-id">
       <option th:each="category : ${categories}" th:value="${category.id}" th:utext="${category.name}"></option>
     </select><br><br>
-    <label for="unit-of-measure">Название единицы измерения товара</label><br>
-    <input type="text" id="unit-of-measure"><br>
+    <label for="form-id">Лекарственная форма</label><br>
+    <select id="form-id">
+      <option th:each="form : ${forms}" th:value="${form.id}" th:text="${form.name}"></option>
+    </select><br><br>
     <label for="expiration-days">Срок годности товара (в днях)</label><br>
     <input type="number" id="expiration-days"><br><br>
     <label for="is-vital">Входит ли товар в перечень ЖНВЛП?</label>
@@ -42,7 +44,7 @@
     <th onclick="sortTable(0)">ID</th>
     <th onclick="sortTable(1)">Название</th>
     <th onclick="sortTable(2)">Фармакологическая группа</th>
-    <th onclick="sortTable(3)">Единица измерения</th>
+    <th onclick="sortTable(3)">Лекарственная форма</th>
     <th onclick="sortTable(4)">Срок годности (дни)</th>
     <th onclick="sortTable(5)">ЖНВЛП?</th>
     <th>Действия</th>
@@ -57,7 +59,11 @@
         <option th:each="category : ${categories}" th:value="${category.id}" th:utext="${category.name}" th:selected="${category.id eq product.category.id}"></option>
       </select>
     </td>
-    <td th:text="${product.unitOfMeasure}" ondblclick="enableEdit(this, '/products/', 'unitOfMeasure')"></td>
+    <td>
+      <select onchange="updateSelected(this, '/products/', 'formId')">
+        <option th:each="form : ${forms}" th:value="${form.id}" th:text="${form.name}" th:selected="${form.id eq product.form.id}"></option>
+      </select>
+    </td>
     <td th:text="${product.expirationDays}" ondblclick="enableEdit(this, '/products/', 'expirationDays')"></td>
     <td>
       <select onchange="updateSelected(this, '/products/', 'isVital')">
@@ -81,14 +87,14 @@
 
     var productName = document.getElementById("product-name").value.trim();
     var productCategoryId = document.getElementById("category-id").value;
-    var productUnitOfMeasure = document.getElementById("unit-of-measure").value.trim();
+    var productFormId = document.getElementById("form-id").value;
     var productExpirationDays = document.getElementById("expiration-days").value;
     var productIsVital = document.getElementById("is-vital").checked.toString();
 
     var requestBody = {
       name: productName,
       categoryId: productCategoryId,
-      unitOfMeasure: productUnitOfMeasure,
+      formId: productFormId,
       expirationDays: productExpirationDays,
       isVital: productIsVital
     };

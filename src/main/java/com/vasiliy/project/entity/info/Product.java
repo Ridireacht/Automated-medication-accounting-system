@@ -23,8 +23,9 @@ public class Product {
   @JoinColumn(name = "category_id")
   private Category category;
 
-  @Column(name = "unit_of_measure")
-  private String unitOfMeasure;
+  @ManyToOne
+  @JoinColumn(name = "form_id")
+  private Form form;
 
   @Column(name = "expiration_days")
   private Long expirationDays;

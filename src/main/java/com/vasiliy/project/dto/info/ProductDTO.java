@@ -16,8 +16,8 @@ public class ProductDTO {
   @NotNull
   private Long categoryId;
 
-  @NotBlank
-  private String unitOfMeasure;
+  @NotNull
+  private Long formId;
 
   @NotNull
   @Min(value = 1, message = "значение должно быть больше нуля")

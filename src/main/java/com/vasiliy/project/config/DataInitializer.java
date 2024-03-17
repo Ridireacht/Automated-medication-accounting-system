@@ -1,7 +1,9 @@
 package com.vasiliy.project.config;
 
 import com.vasiliy.project.entity.info.Category;
+import com.vasiliy.project.entity.info.Form;
 import com.vasiliy.project.repository.CategoryRepository;
+import com.vasiliy.project.repository.FormRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -14,6 +16,7 @@ import java.util.List;
 public class DataInitializer implements CommandLineRunner {
 
     private final CategoryRepository categoryRepository;
+    private final FormRepository formRepository;
 
 
     @Override
@@ -380,6 +383,49 @@ public class DataInitializer implements CommandLineRunner {
             categories.add(new Category("0160-0090-0010", "Средства для коррекции нарушений при алкоголизме, токсико- и наркомании в комбинациях"));
 
             categoryRepository.saveAll(categories);
+        }
+
+
+        if (formRepository.findAll().isEmpty()) {
+            List<Form> forms = new ArrayList<>();
+
+            forms.add(new Form("Таблетка"));
+            forms.add(new Form("Капсула"));
+            forms.add(new Form("Микрокапсула"));
+            forms.add(new Form("Нанокапсула"));
+            forms.add(new Form("Гранулы"));
+            forms.add(new Form("Драже"));
+            forms.add(new Form("Пилюля"));
+            forms.add(new Form("Пастилки"));
+            forms.add(new Form("Порошок"));
+            forms.add(new Form("Брикет"));
+            forms.add(new Form("Лекарственный карандаш"));
+            forms.add(new Form("Жевательная резинка"));
+            forms.add(new Form("Пеллеты"));
+            forms.add(new Form("Мазь"));
+            forms.add(new Form("Крем"));
+            forms.add(new Form("Гель"));
+            forms.add(new Form("Суппозитории"));
+            forms.add(new Form("Линименты"));
+            forms.add(new Form("Паста"));
+            forms.add(new Form("Пессарий"));
+            forms.add(new Form("Пластырь"));
+            forms.add(new Form("TTC"));
+            forms.add(new Form("Раствор"));
+            forms.add(new Form("Суспензия"));
+            forms.add(new Form("Эмульсия"));
+            forms.add(new Form("Капли"));
+            forms.add(new Form("Микстура"));
+            forms.add(new Form("Настойка"));
+            forms.add(new Form("Настой"));
+            forms.add(new Form("Отвар"));
+            forms.add(new Form("Сироп"));
+            forms.add(new Form("Аэрозоль и спреи"));
+            forms.add(new Form("Газы"));
+            forms.add(new Form("Лекарственный сбор"));
+            forms.add(new Form("Лекарственные формы для инъекций"));
+
+            formRepository.saveAll(forms);
         }
     }
 }

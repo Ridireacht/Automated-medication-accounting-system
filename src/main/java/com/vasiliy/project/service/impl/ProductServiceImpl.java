@@ -6,6 +6,7 @@ import com.vasiliy.project.entity.StorageProduct;
 import com.vasiliy.project.entity.info.Product;
 import com.vasiliy.project.mapper.ProductMapper;
 import com.vasiliy.project.repository.CategoryRepository;
+import com.vasiliy.project.repository.FormRepository;
 import com.vasiliy.project.repository.ProductRepository;
 import com.vasiliy.project.repository.StorageProductRepository;
 import com.vasiliy.project.service.ProductService;
@@ -21,6 +22,7 @@ public class ProductServiceImpl implements ProductService {
 
   private final ProductRepository productRepository;
   private final CategoryRepository categoryRepository;
+  private final FormRepository formRepository;
   private final StorageProductRepository storageProductRepository;
 
   private final ProductMapper productMapper;
@@ -49,7 +51,7 @@ public class ProductServiceImpl implements ProductService {
       switch (updateRequest.getType()) {
         case "name" -> product.setName(updateRequest.getValue());
         case "categoryId" -> product.setCategory(categoryRepository.findById(Long.valueOf(updateRequest.getValue())).get());
-        case "unitOfMeasure" -> product.setUnitOfMeasure(updateRequest.getValue());
+        case "formId" -> product.setForm(formRepository.findById(Long.valueOf(updateRequest.getValue())).get());
         case "expirationDays" -> {
           List<StorageProduct> storageProducts = product.getStorageProducts();
 
