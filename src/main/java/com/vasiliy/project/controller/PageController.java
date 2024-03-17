@@ -12,6 +12,7 @@ public class PageController {
 
   private final CategoryService categoryService;
   private final FormService formService;
+  private final AccountingTypeService accountingTypeService;
   private final SupplierService supplierService;
   private final ProductService productService;
   private final StorageProductService storageProductService;
@@ -38,6 +39,7 @@ public class PageController {
   public String getProducts(Model model) {
     model.addAttribute("categories", categoryService.getAllCategoriesWithNbsp());
     model.addAttribute("forms", formService.getAllForms());
+    model.addAttribute("accountingTypes", accountingTypeService.getAllAccountingTypes());
     model.addAttribute("products", productService.getAllProducts());
     return "products";
   }

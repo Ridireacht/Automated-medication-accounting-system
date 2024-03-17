@@ -27,7 +27,11 @@
     <label for="is-vital">Входит ли товар в перечень ЖНВЛП?</label>
     <input type="checkbox" id="is-vital" style="transform: scale(1.1);"><br><br>
     <label for="is-prescriptive">Является ли товар рецептурным?</label>
-    <input type="checkbox" id="is-prescriptive" style="transform: scale(1.1);"><br><br><br>
+    <input type="checkbox" id="is-prescriptive" style="transform: scale(1.1);"><br><br>
+    <label for="accounting-type-id">Подлежит ПКУ (предметно-количественному учёту)?</label><br>
+    <select id="accounting-type-id">
+      <option th:each="accountingType : ${accountingTypes}" th:value="${accountingType.id}" th:text="${accountingType.name}"></option>
+    </select><br><br><br>
     <button type="submit">Добавить</button>
   </form>
 </div>
@@ -50,6 +54,7 @@
     <th onclick="sortTable(4)">Срок годности (дни)</th>
     <th onclick="sortTable(5)">ЖНВЛП?</th>
     <th onclick="sortTable(6)">Рецептурный?</th>
+    <th onclick="sortTable(7)">Подлежит ПКУ?</th>
     <th>Действия</th>
   </tr>
   </thead>
@@ -78,6 +83,11 @@
       <select onchange="updateSelected(this, '/products/', 'isPrescriptive')">
         <option th:value="true" th:text="Да" th:selected="${product.isPrescriptive}"></option>
         <option th:value="false" th:text="Нет" th:selected="${!product.isPrescriptive}"></option>
+      </select>
+    </td>
+    <td>
+      <select onchange="updateSelected(this, '/products/', 'accountingTypeId')">
+        <option th:each="accountingType : ${accountingTypes}" th:value="${accountingType.id}" th:text="${accountingType.name}" th:selected="${accountingType.id eq product.accountingType.id}"></option>
       </select>
     </td>
     <td><button class="delete-button" onclick="deleteRecord(this, '/products/')">Удалить</button></td>

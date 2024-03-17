@@ -5,10 +5,7 @@ import com.vasiliy.project.dto.info.UpdateRequest;
 import com.vasiliy.project.entity.StorageProduct;
 import com.vasiliy.project.entity.info.Product;
 import com.vasiliy.project.mapper.ProductMapper;
-import com.vasiliy.project.repository.CategoryRepository;
-import com.vasiliy.project.repository.FormRepository;
-import com.vasiliy.project.repository.ProductRepository;
-import com.vasiliy.project.repository.StorageProductRepository;
+import com.vasiliy.project.repository.*;
 import com.vasiliy.project.service.ProductService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -23,6 +20,7 @@ public class ProductServiceImpl implements ProductService {
   private final ProductRepository productRepository;
   private final CategoryRepository categoryRepository;
   private final FormRepository formRepository;
+  private final AccountingTypeRepository accountingTypeRepository;
   private final StorageProductRepository storageProductRepository;
 
   private final ProductMapper productMapper;
@@ -52,6 +50,7 @@ public class ProductServiceImpl implements ProductService {
         case "name" -> product.setName(updateRequest.getValue());
         case "categoryId" -> product.setCategory(categoryRepository.findById(Long.valueOf(updateRequest.getValue())).get());
         case "formId" -> product.setForm(formRepository.findById(Long.valueOf(updateRequest.getValue())).get());
+        case "accountingTypeId" -> product.setAccountingType(accountingTypeRepository.findById(Long.valueOf(updateRequest.getValue())).get());
         case "expirationDays" -> {
           List<StorageProduct> storageProducts = product.getStorageProducts();
 

@@ -27,6 +27,10 @@ public class Product {
   @JoinColumn(name = "form_id")
   private Form form;
 
+  @ManyToOne
+  @JoinColumn(name = "accounting_type_id")
+  private AccountingType accountingType;
+
   @Column(name = "expiration_days")
   private Long expirationDays;
 

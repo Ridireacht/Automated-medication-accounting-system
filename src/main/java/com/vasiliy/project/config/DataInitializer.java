@@ -1,7 +1,9 @@
 package com.vasiliy.project.config;
 
+import com.vasiliy.project.entity.info.AccountingType;
 import com.vasiliy.project.entity.info.Category;
 import com.vasiliy.project.entity.info.Form;
+import com.vasiliy.project.repository.AccountingTypeRepository;
 import com.vasiliy.project.repository.CategoryRepository;
 import com.vasiliy.project.repository.FormRepository;
 import lombok.AllArgsConstructor;
@@ -17,6 +19,7 @@ public class DataInitializer implements CommandLineRunner {
 
     private final CategoryRepository categoryRepository;
     private final FormRepository formRepository;
+    private final AccountingTypeRepository accountingTypeRepository;
 
 
     @Override
@@ -426,6 +429,19 @@ public class DataInitializer implements CommandLineRunner {
             forms.add(new Form("Лекарственные формы для инъекций"));
 
             formRepository.saveAll(forms);
+        }
+
+
+        if (accountingTypeRepository.findAll().isEmpty()) {
+            List<AccountingType> accountingTypes = new ArrayList<>();
+
+            accountingTypes.add(new AccountingType("Нет"));
+            accountingTypes.add(new AccountingType("Группа 1 (наркотические и психотропные в-ва)"));
+            accountingTypes.add(new AccountingType("Группа 2 (сильнодействующие и ядовитые в-ва)"));
+            accountingTypes.add(new AccountingType("Группа 3 (комбинированные с наркотическими или психотропными в-вами"));
+            accountingTypes.add(new AccountingType("Группа 4 (иные)"));
+
+            accountingTypeRepository.saveAll(accountingTypes);
         }
     }
 }

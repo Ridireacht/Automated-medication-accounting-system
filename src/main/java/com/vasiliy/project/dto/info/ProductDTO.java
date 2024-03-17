@@ -20,6 +20,9 @@ public class ProductDTO {
   private Long formId;
 
   @NotNull
+  private Long accountingTypeId;
+
+  @NotNull
   @Min(value = 1, message = "значение должно быть больше нуля")
   private Long expirationDays;
 

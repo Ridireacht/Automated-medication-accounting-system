@@ -26,7 +26,7 @@ public class ProductController {
 
   @PutMapping("/{id}")
   public ResponseEntity<String> updateProduct(@PathVariable("id") Long productId, @RequestBody UpdateRequest updateRequest) {
-    if (updateRequest.getType() == null || !updateRequest.typeMatchesAny(new String[] {"name", "categoryId", "formId", "expirationDays", "isVital", "isPrescriptive"})) {
+    if (updateRequest.getType() == null || !updateRequest.typeMatchesAny(new String[] {"name", "categoryId", "formId", "accountingTypeId", "expirationDays", "isVital", "isPrescriptive"})) {
       throw new CustomBadRequestException();
     }
 
