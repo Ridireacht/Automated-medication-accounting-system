@@ -361,7 +361,6 @@ public class DataInitializer implements CommandLineRunner {
             categories.add(new Category("0130-0070", "Другие противоопухолевые средства"));
             categories.add(new Category("0130-0030", "Противоопухолевые антибиотики"));
             categories.add(new Category("0130-0040", "Противоопухолевые гормональные средства и антагонисты гормонов"));
-            categories.add(new Category("0130-0040-0060", ""));
             categories.add(new Category("0130-0060", "Противоопухолевые средства — ингибиторы протеинкиназ"));
             categories.add(new Category("0130-0055", "Противоопухолевые средства — моноклональные антитела"));
             categories.add(new Category("0130-0055-0056", "Противоопухолевые средства — моноклональные антитела в комбинациях"));

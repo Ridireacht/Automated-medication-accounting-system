@@ -13,6 +13,9 @@ import java.util.List;
 @Table(name = "categories")
 public class Category {
 
+  public Category() {
+  }
+
   public Category(String code, String name) {
     this.code = code;
     this.name = name;
