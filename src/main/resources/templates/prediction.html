@@ -2,16 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Прогнозирование потребности в товарах</title>
+  <title>Прогнозирование потребностей</title>
   <link rel="stylesheet" type="text/css" href="/css/styles.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
-<h1 style="text-align: center;">Прогнозирование потребности в товарах</h1>
+<h1 style="text-align: center;">Прогнозирование потребностей</h1>
 
 <div class="add-form">
-  <label for="product-id">Выберите товар, для которого нужно произвести прогнозирование:</label><br>
+  <label for="product-id">Выберите препарат, для которого нужно произвести прогнозирование:</label><br>
   <select id="product-id">
     <option th:each="product : ${products}" th:value="${product.id}" th:text="${product.name}"></option>
   </select><br><br>
@@ -21,10 +21,10 @@
 
 <div class="add-form">
   <p>Количество проанализированных недель: <span id="weeksAnalyzed"></span></p>
-  <p>Прогноз расхода товара на следующую неделю: <span id="nextWeekOutflowPrediction"></span> штук</p>
+  <p>Прогноз расхода препарата на следующую неделю: <span id="nextWeekOutflowPrediction"></span> штук</p>
   <hr>
   <p>Количество проанализированных месяцев: <span id="monthsAnalyzed"></span></p>
-  <p>Прогноз расхода товара на следующий месяц: <span id="nextMonthOutflowPrediction"></span> штук</p>
+  <p>Прогноз расхода препарата на следующий месяц: <span id="nextMonthOutflowPrediction"></span> штук</p>
   <br><br><br>
   <div id="chart-container">
     <canvas id="outflow-chart"></canvas>

@@ -2,33 +2,33 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Справочник товаров</title>
+  <title>Справочник лекарственных препаратов</title>
   <link rel="stylesheet" type="text/css" href="/css/styles.css">
 </head>
 <body>
 
-<h1 style="text-align: center;">Справочник товаров</h1>
+<h1 style="text-align: center;">Справочник лекарственных препаратов</h1>
 
 <div class="add-form">
-  <h2>Добавить новый товар</h2>
+  <h2>Добавить новый лекарственный препарат</h2>
   <form id="add-form">
-    <label for="product-name">Название товара</label><br>
+    <label for="product-name">Название лекарственного препарата</label><br>
     <input type="text" id="product-name"><br>
-    <label for="category-id">Категория товара</label><br>
+    <label for="category-id">Категория лекарственного препарата</label><br>
     <select id="category-id">
       <option th:each="category : ${categories}" th:value="${category.id}" th:utext="${category.name}"></option>
     </select><br><br>
-    <label for="form-id">Лекарственная форма</label><br>
+    <label for="form-id">Лекарственная форма препарата</label><br>
     <select id="form-id">
       <option th:each="form : ${forms}" th:value="${form.id}" th:text="${form.name}"></option>
     </select><br><br>
-    <label for="expiration-days">Срок годности товара (в днях)</label><br>
+    <label for="expiration-days">Срок годности препарата (в днях)</label><br>
     <input type="number" id="expiration-days"><br><br>
-    <label for="is-vital">Входит ли товар в перечень ЖНВЛП?</label>
+    <label for="is-vital">Входит ли препарат в перечень ЖНВЛП?</label>
     <input type="checkbox" id="is-vital" style="transform: scale(1.1);"><br><br>
-    <label for="is-prescriptive">Является ли товар рецептурным?</label>
+    <label for="is-prescriptive">Является ли препарат рецептурным?</label>
     <input type="checkbox" id="is-prescriptive" style="transform: scale(1.1);"><br><br>
-    <label for="accounting-type-id">Подлежит ПКУ (предметно-количественному учёту)?</label><br>
+    <label for="accounting-type-id">Подлежит ли препарат предметно-количественному учёту?</label><br>
     <select id="accounting-type-id">
       <option th:each="accountingType : ${accountingTypes}" th:value="${accountingType.id}" th:text="${accountingType.name}"></option>
     </select><br><br><br>
@@ -39,7 +39,7 @@
 <div style="margin-top: 60px;"></div>
 
 <div>
-  <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Поиск по полям товара...">
+  <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Поиск по полям препарата...">
 </div>
 
 <div style="margin-top: 20px;"></div>
@@ -54,7 +54,7 @@
     <th onclick="sortTable(4)">Срок годности (дни)</th>
     <th onclick="sortTable(5)">ЖНВЛП?</th>
     <th onclick="sortTable(6)">Рецептурный?</th>
-    <th onclick="sortTable(7)">Подлежит ПКУ?</th>
+    <th onclick="sortTable(7)">ПКУ?</th>
     <th>Действия</th>
   </tr>
   </thead>

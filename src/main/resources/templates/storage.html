@@ -10,9 +10,9 @@
 <h1 style="text-align: center;">Обзор и управление складом</h1>
 
 <div class="add-form">
-  <h2>Оприходовать новый товар</h2>
+  <h2>Оприходовать новый препарат</h2>
   <form id="add-form">
-    <label for="product-id">Товар</label><br>
+    <label for="product-id">Препарат</label><br>
     <select id="product-id">
       <option th:each="product : ${products}" th:value="${product.id}" th:text="${product.name}"></option>
     </select><br><br>
@@ -48,7 +48,7 @@
   <thead>
   <tr>
     <th onclick="sortTable(0)">ID</th>
-    <th onclick="sortTable(1)">Товар</th>
+    <th onclick="sortTable(1)">Препарат</th>
     <th onclick="sortTable(2)">Поставщик</th>
     <th onclick="sortTable(3)">Количество</th>
     <th onclick="sortTable(4)">Срок годности истекает:</th>
