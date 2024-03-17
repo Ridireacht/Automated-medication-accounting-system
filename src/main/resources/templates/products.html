@@ -16,7 +16,7 @@
     <input type="text" id="product-name"><br>
     <label for="category-id">Категория товара</label><br>
     <select id="category-id">
-      <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+      <option th:each="category : ${categories}" th:value="${category.id}" th:utext="${category.name}"></option>
     </select><br><br>
     <label for="unit-of-measure">Название единицы измерения товара</label><br>
     <input type="text" id="unit-of-measure"><br>
@@ -54,7 +54,7 @@
     <td th:text="${product.name}" ondblclick="enableEdit(this, '/products/', 'name')"></td>
     <td>
       <select onchange="updateSelected(this, '/products/', 'categoryId')">
-        <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}" th:selected="${category.id eq product.category.id}"></option>
+        <option th:each="category : ${categories}" th:value="${category.id}" th:utext="${category.name}" th:selected="${category.id eq product.category.id}"></option>
       </select>
     </td>
     <td th:text="${product.unitOfMeasure}" ondblclick="enableEdit(this, '/products/', 'unitOfMeasure')"></td>

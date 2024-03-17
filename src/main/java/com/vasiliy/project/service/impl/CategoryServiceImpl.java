@@ -27,7 +27,7 @@ public class CategoryServiceImpl implements CategoryService {
     for (Category category : categories) {
       int occurences = countOccurrences(category.getCode(), "-");
 
-      String nbsps = "&nbsp;";
+      String nbsps = "&emsp;&emsp;";
       nbsps = nbsps.repeat(occurences);
 
       category.setName(nbsps + category.getName());
