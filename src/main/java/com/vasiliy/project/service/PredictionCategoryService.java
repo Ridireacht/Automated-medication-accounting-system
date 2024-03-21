@@ -5,9 +5,11 @@ import com.vasiliy.project.dto.info.PredictionDataDTO;
 import java.util.List;
 
 public interface PredictionCategoryService {
-    List<Integer> collectOutflowValues(Long productId, Integer numberOfLastWeeks);
+    List<Integer> collectOutflowValueByProduct(Long productId, Integer numberOfLastWeeks);
 
-    PredictionDataDTO getPredictionDTO(Long productId, Integer numberOfLastWeeks);
+    List<Integer> collectOutflowValues(Long categoryId, Integer numberOfLastWeeks);
+
+    PredictionDataDTO getPredictionDTO(Long categoryId, Integer numberOfLastWeeks);
 
     Integer getNextWeekPrediction(List<Integer> weekOutflowValues);
 
