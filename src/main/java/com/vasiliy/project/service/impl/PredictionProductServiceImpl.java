@@ -5,7 +5,7 @@ import com.vasiliy.project.entity.records.SoldRecord;
 import com.vasiliy.project.entity.records.WrittenOffRecord;
 import com.vasiliy.project.repository.SoldRecordRepository;
 import com.vasiliy.project.repository.WrittenOffRecordRepository;
-import com.vasiliy.project.service.PredictionService;
+import com.vasiliy.project.service.PredictionProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class PredictionServiceImpl implements PredictionService {
+public class PredictionProductServiceImpl implements PredictionProductService {
 
   private final SoldRecordRepository soldRecordRepository;
   private final WrittenOffRecordRepository writtenOffRecordRepository;
@@ -139,8 +139,6 @@ public class PredictionServiceImpl implements PredictionService {
 
     predictionDataDTO.setLabels(new ArrayList<>());
     predictionDataDTO.setOutflowValues(new ArrayList<>());
-    predictionDataDTO.setWeeksAnalyzed(null);
-    predictionDataDTO.setMonthsAnalyzed(null);
     predictionDataDTO.setNextWeekOutflowPrediction(null);
     predictionDataDTO.setNextMonthOutflowPrediction(null);
 
@@ -151,8 +149,6 @@ public class PredictionServiceImpl implements PredictionService {
 
     // Если список пустой, то и анализировать нечего
     if (outflowValues.isEmpty()) {
-      predictionDataDTO.setWeeksAnalyzed(0);
-      predictionDataDTO.setMonthsAnalyzed(0);
       predictionDataDTO.setNextWeekOutflowPrediction(0);
       predictionDataDTO.setNextMonthOutflowPrediction(0);
 
@@ -205,11 +201,6 @@ public class PredictionServiceImpl implements PredictionService {
 
       monthOutflowValues.add(currentOutflowValue);
     }
-
-
-    // Указываем количество проанализированных недель и месяцев
-    predictionDataDTO.setWeeksAnalyzed(weekOutflowValues.size());
-    predictionDataDTO.setMonthsAnalyzed(monthOutflowValues.size());
 
 
     // Проводим прогнозирование на следующую неделю

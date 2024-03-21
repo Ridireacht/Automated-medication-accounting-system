@@ -4,7 +4,7 @@ import com.vasiliy.project.dto.info.PredictionDataDTO;
 
 import java.util.List;
 
-public interface PredictionService {
+public interface PredictionProductService {
 
   List<Integer> collectOutflowValues(Long productId, Integer numberOfLastWeeks);
 

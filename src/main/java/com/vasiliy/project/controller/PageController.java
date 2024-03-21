@@ -70,9 +70,15 @@ public class PageController {
     return "written-off";
   }
 
-  @GetMapping("/prediction")
-  public String getPrediction(Model model) {
+  @GetMapping("/prediction-product")
+  public String getPredictionProduct(Model model) {
     model.addAttribute("products", productService.getAllProducts());
-    return "prediction";
+    return "prediction-product";
+  }
+
+  @GetMapping("/prediction-category")
+  public String getPredictionGroup(Model model) {
+    model.addAttribute("categories", categoryService.getAllCategoriesWithNbsp());
+    return "prediction-category";
   }
 }

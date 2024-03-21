@@ -2,29 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Прогнозирование потребностей</title>
+  <title>Прогнозирование потребностей по фармакологической группе</title>
   <link rel="stylesheet" type="text/css" href="/css/styles.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
-<h1 style="text-align: center;">Прогнозирование потребностей</h1>
+<h1 style="text-align: center;">Прогнозирование потребностей по фармакологической группе</h1>
 
 <div class="add-form">
-  <label for="product-id">Выберите препарат, для которого нужно произвести прогнозирование:</label><br>
-  <select id="product-id">
-    <option th:each="product : ${products}" th:value="${product.id}" th:text="${product.name}"></option>
+  <label for="category-id">Выберите фармакологическую группу, для которого нужно произвести прогнозирование:</label><br>
+  <select id="category-id">
+    <option th:each="category : ${categories}" th:value="${category.id}" th:utext="${category.name}"></option>
   </select><br><br>
 </div>
 
 <div style="margin-top: 60px;"></div>
 
 <div class="add-form">
-  <p>Количество проанализированных недель: <span id="weeksAnalyzed"></span></p>
-  <p>Прогноз расхода препарата на следующую неделю: <span id="nextWeekOutflowPrediction"></span> штук</p>
-  <hr>
-  <p>Количество проанализированных месяцев: <span id="monthsAnalyzed"></span></p>
-  <p>Прогноз расхода препарата на следующий месяц: <span id="nextMonthOutflowPrediction"></span> штук</p>
+  <p>Прогноз расхода препаратов фармакологической группы на следующую неделю: <span id="nextWeekOutflowPrediction"></span> штук</p>
+  <p>Прогноз расхода препаратов фармакологической группы на следующий месяц: <span id="nextMonthOutflowPrediction"></span> штук</p>
   <br><br><br>
   <div id="chart-container">
     <canvas id="outflow-chart"></canvas>
@@ -39,14 +36,12 @@
   var myChart;
 
   function getPredictionData() {
-    var productId = document.getElementById("product-id").value;
+    var productId = document.getElementById("category-id").value;
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 var response = JSON.parse(xhr.responseText);
-                document.getElementById('weeksAnalyzed').textContent = response.weeksAnalyzed;
-                document.getElementById('monthsAnalyzed').textContent = response.monthsAnalyzed;
                 document.getElementById('nextWeekOutflowPrediction').textContent = response.nextWeekOutflowPrediction;
                 document.getElementById('nextMonthOutflowPrediction').textContent = response.nextMonthOutflowPrediction;
 
@@ -60,7 +55,7 @@
                     data: {
                         labels: response.labels,
                         datasets: [{
-                            label: 'Расход товара',
+                            label: 'Расход препаратов',
                             data: response.outflowValues,
                             borderColor: 'rgb(75, 192, 192)',
                             tension: 0.1
@@ -81,7 +76,7 @@
             }
         }
     };
-    xhr.open('GET', '/prediction/' + productId);
+    xhr.open('GET', '/prediction-category/' + productId);
     xhr.send();
   }
 

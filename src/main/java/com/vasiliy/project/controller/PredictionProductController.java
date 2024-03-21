@@ -3,7 +3,7 @@ package com.vasiliy.project.controller;
 import com.vasiliy.project.dto.info.PredictionDataDTO;
 import com.vasiliy.project.exception.CustomBadRequestException;
 import com.vasiliy.project.repository.ProductRepository;
-import com.vasiliy.project.service.PredictionService;
+import com.vasiliy.project.service.PredictionProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/prediction")
-public class PredictionController {
+@RequestMapping("/prediction-product")
+public class PredictionProductController {
 
-  private final PredictionService predictionService;
+  private final PredictionProductService predictionProductService;
 
   private final ProductRepository productRepository;
 
@@ -26,6 +26,6 @@ public class PredictionController {
       throw new CustomBadRequestException();
     }
 
-    return predictionService.getPredictionDTO(productId, 12);
+    return predictionProductService.getPredictionDTO(productId, 12);
   }
 }
