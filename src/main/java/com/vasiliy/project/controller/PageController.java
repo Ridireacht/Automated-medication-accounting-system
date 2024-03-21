@@ -1,10 +1,14 @@
 package com.vasiliy.project.controller;
 
+import com.vasiliy.project.entity.info.Category;
 import com.vasiliy.project.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @AllArgsConstructor
@@ -78,7 +82,13 @@ public class PageController {
 
   @GetMapping("/prediction-category")
   public String getPredictionGroup(Model model) {
-    model.addAttribute("categories", categoryService.getAllCategoriesWithNbsp());
+    List<Category> categories = categoryService.getAllCategories();
+
+    categories = categories.stream()
+            .filter(category -> !category.getProducts().isEmpty())
+            .collect(Collectors.toList());
+    
+    model.addAttribute("categories", categories);
     return "prediction-category";
   }
 }
