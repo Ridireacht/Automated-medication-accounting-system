@@ -1,8 +1,6 @@
 package com.vasiliy.project.service.impl;
 
-import com.vasiliy.project.entity.info.Category;
 import com.vasiliy.project.entity.info.Form;
-import com.vasiliy.project.repository.CategoryRepository;
 import com.vasiliy.project.repository.FormRepository;
 import com.vasiliy.project.service.FormService;
 import lombok.AllArgsConstructor;
