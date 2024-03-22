@@ -11,7 +11,7 @@ public interface PredictionCategoryService {
 
     PredictionDataDTO getPredictionDTO(Long categoryId, Integer numberOfLastWeeks);
 
-    Integer getNextWeekPrediction(List<Integer> weekOutflowValues);
+    Double getNextWeekPrediction(List<Integer> weekOutflowValues);
 
-    Integer getNextMonthPrediction(List<Integer> monthOutflowValues);
+    Double getNextMonthPrediction(List<Integer> monthOutflowValues);
 }

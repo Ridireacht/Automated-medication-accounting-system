@@ -36,7 +36,7 @@ public class PredictionCategoryServiceImpl implements PredictionCategoryService 
 
 
         // Определяем временные пределы, в которых собираются данные
-        LocalDateTime endDateTime = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
+        LocalDateTime endDateTime = LocalDateTime.now().plusDays(1).truncatedTo(ChronoUnit.DAYS);
         LocalDateTime startDateTime = endDateTime.minusWeeks(numberOfLastWeeks).truncatedTo(ChronoUnit.DAYS);
 
         LocalDate startDate = startDateTime.toLocalDate();
@@ -77,7 +77,7 @@ public class PredictionCategoryServiceImpl implements PredictionCategoryService 
     @Override
     public List<Integer> collectOutflowValues(Long categoryId, Integer numberOfLastWeeks) {
 
-        LocalDateTime endDateTime = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
+        LocalDateTime endDateTime = LocalDateTime.now().plusDays(1).truncatedTo(ChronoUnit.DAYS);
 
 
         // Собираем препараты, входящие в фармакологическую группу
@@ -121,14 +121,8 @@ public class PredictionCategoryServiceImpl implements PredictionCategoryService 
 
 
         // Высчитываем labels для вывода графика и записываем их в респонс
-        int additionalDaysNeeded = outflowValues.size();
-        while (additionalDaysNeeded >= 7) {
-            additionalDaysNeeded -= 7;
-        }
-        additionalDaysNeeded = 7 - additionalDaysNeeded;
-
         LocalDate endDate = endDateTime.toLocalDate().minusDays(1);
-        LocalDate currentDate = endDate.minusDays(outflowValues.size() + additionalDaysNeeded - 1);
+        LocalDate currentDate = endDate.minusDays(outflowValues.size() - 1);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
         while (!currentDate.isAfter(endDate)) {
@@ -158,30 +152,14 @@ public class PredictionCategoryServiceImpl implements PredictionCategoryService 
 
         // Если список пустой, то и анализировать нечего
         if (outflowValues.isEmpty()) {
-            predictionDataDTO.setNextWeekOutflowPrediction(0);
-            predictionDataDTO.setNextMonthOutflowPrediction(0);
+            predictionDataDTO.setNextWeekOutflowPrediction(0.0);
+            predictionDataDTO.setNextMonthOutflowPrediction(0.0);
 
             predictionDataDTO.setLabels(new ArrayList<>());
             predictionDataDTO.setOutflowValues(new ArrayList<>());
 
             return predictionDataDTO;
         }
-
-
-        // Добиваем число дней до кратного 7, если необходимо (т.к. метод использует недели)
-        int additionalDaysNeeded = outflowValues.size();
-        while (additionalDaysNeeded >= 7) {
-            additionalDaysNeeded -= 7;
-        }
-        additionalDaysNeeded = 7 - additionalDaysNeeded;
-
-        Collections.reverse(outflowValues);
-
-        for (int i = 0; i < additionalDaysNeeded; i++) {
-            outflowValues.add(0);
-        }
-
-        Collections.reverse(outflowValues);
 
 
         // Собираем список расхода товаров по неделям.
@@ -197,15 +175,14 @@ public class PredictionCategoryServiceImpl implements PredictionCategoryService 
             weekOutflowValues.add(currentOutflowValue);
         }
 
-
-        // Пытаемся собрать список расхода товаров по месяцам. Если недель меньше 4, то список будет пустым.
+        // Собираем список расхода товаров по месяцам.
         // Проход по месяцам
-        for (int i = 1; i <= weekOutflowValues.size() / 4; i++) {
+        for (int i = 0; i < weekOutflowValues.size() / 4; i++) {
             currentOutflowValue = 0;
 
             // Проход по неделям в месяце
             for (int j = 0; j < 4; j++) {
-                currentOutflowValue += outflowValues.get((i-1) * 4 + j);
+                currentOutflowValue += weekOutflowValues.get(i * 4 + j);
             }
 
             monthOutflowValues.add(currentOutflowValue);
@@ -220,7 +197,7 @@ public class PredictionCategoryServiceImpl implements PredictionCategoryService 
         if (!monthOutflowValues.isEmpty()) {
             predictionDataDTO.setNextMonthOutflowPrediction(getNextMonthPrediction(monthOutflowValues));
         } else {
-            predictionDataDTO.setNextMonthOutflowPrediction(0);
+            predictionDataDTO.setNextMonthOutflowPrediction(0.0);
         }
 
 
@@ -228,7 +205,7 @@ public class PredictionCategoryServiceImpl implements PredictionCategoryService 
     }
 
     @Override
-    public Integer getNextWeekPrediction(List<Integer> weekOutflowValues) {
+    public Double getNextWeekPrediction(List<Integer> weekOutflowValues) {
         int outflowValue;
 
 
@@ -247,11 +224,11 @@ public class PredictionCategoryServiceImpl implements PredictionCategoryService 
 
 
         // Проводим округление до целого значения в большую сторону
-        return (int) Math.ceil(forecast);
+        return forecast;
     }
 
     @Override
-    public Integer getNextMonthPrediction(List<Integer> monthOutflowValues) {
+    public Double getNextMonthPrediction(List<Integer> monthOutflowValues) {
         int outflowValue;
 
 
@@ -270,6 +247,6 @@ public class PredictionCategoryServiceImpl implements PredictionCategoryService 
 
 
         // Проводим округление до целого значения в большую сторону
-        return (int) Math.ceil(forecast);
+        return forecast;
     }
 }

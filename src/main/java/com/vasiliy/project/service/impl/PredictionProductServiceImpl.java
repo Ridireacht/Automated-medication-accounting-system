@@ -34,7 +34,7 @@ public class PredictionProductServiceImpl implements PredictionProductService {
 
 
     // Определяем временные пределы, в которых собираются данные
-    LocalDateTime endDateTime = LocalDateTime.now().truncatedTo(ChronoUnit.DAYS);
+    LocalDateTime endDateTime = LocalDateTime.now().plusDays(1).truncatedTo(ChronoUnit.DAYS);
     LocalDateTime startDateTime = endDateTime.minusWeeks(numberOfLastWeeks).truncatedTo(ChronoUnit.DAYS);
 
     LocalDate startDate = startDateTime.toLocalDate();
@@ -70,56 +70,17 @@ public class PredictionProductServiceImpl implements PredictionProductService {
 
 
     // Удаляем лишние нули (от начала и до встречи первого ненулевого числа)
-    if (soldRecords.isEmpty()) {
-
-      // Записей нет - список пустой
-      if (writtenOffRecords.isEmpty()) {
-        outflowValues.clear();
-        return outflowValues;
-      }
-
-      // Есть только writtenOffRecords - удаляем нули до первой его даты
-      else {
-        dayDifference = (int) ChronoUnit.DAYS.between(startDate, writtenOffRecords.get(0).getWrittenOffAt().toLocalDate());
-      }
+    if (soldRecords.isEmpty() && writtenOffRecords.isEmpty()) {
+      return outflowValues;
     }
-
-    else {
-
-      // Есть только soldRecords - удаляем нули до первой его даты
-      if (writtenOffRecords.isEmpty()) {
-        dayDifference = (int) ChronoUnit.DAYS.between(startDate, soldRecords.get(0).getSoldAt().toLocalDate());
-      }
-
-      // Есть оба типа записей - сравниваем и находим самую раннюю дату, удаляем нули до неё
-      else {
-        if (soldRecords.get(0).getSoldAt().isAfter(writtenOffRecords.get(0).getWrittenOffAt())) {
-          dayDifference = (int) ChronoUnit.DAYS.between(startDate, writtenOffRecords.get(0).getWrittenOffAt().toLocalDate());
-        }
-
-        else {
-          dayDifference = (int) ChronoUnit.DAYS.between(startDate, soldRecords.get(0).getSoldAt().toLocalDate());
-        }
-
-      }
-    }
-
-    outflowValues.subList(0, dayDifference).clear();
 
 
     // Сразу записываем результаты в респонс
     predictionDataDTO.setOutflowValues(outflowValues);
 
 
-    // Высчитываем labels для вывода графика и записываем их в респонс
-    int additionalDaysNeeded = outflowValues.size();
-    while (additionalDaysNeeded >= 7) {
-      additionalDaysNeeded -= 7;
-    }
-    additionalDaysNeeded = 7 - additionalDaysNeeded;
-
     LocalDate endDate = endDateTime.toLocalDate().minusDays(1);
-    LocalDate currentDate = endDate.minusDays(outflowValues.size() + additionalDaysNeeded - 1);
+    LocalDate currentDate = endDate.minusDays(outflowValues.size() - 1);
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     while (!currentDate.isAfter(endDate)) {
@@ -149,30 +110,14 @@ public class PredictionProductServiceImpl implements PredictionProductService {
 
     // Если список пустой, то и анализировать нечего
     if (outflowValues.isEmpty()) {
-      predictionDataDTO.setNextWeekOutflowPrediction(0);
-      predictionDataDTO.setNextMonthOutflowPrediction(0);
+      predictionDataDTO.setNextWeekOutflowPrediction(0.0);
+      predictionDataDTO.setNextMonthOutflowPrediction(0.0);
 
       predictionDataDTO.setLabels(new ArrayList<>());
       predictionDataDTO.setOutflowValues(new ArrayList<>());
 
       return predictionDataDTO;
     }
-
-
-    // Добиваем число дней до кратного 7, если необходимо (т.к. метод использует недели)
-    int additionalDaysNeeded = outflowValues.size();
-    while (additionalDaysNeeded >= 7) {
-      additionalDaysNeeded -= 7;
-    }
-    additionalDaysNeeded = 7 - additionalDaysNeeded;
-
-    Collections.reverse(outflowValues);
-
-    for (int i = 0; i < additionalDaysNeeded; i++) {
-      outflowValues.add(0);
-    }
-
-    Collections.reverse(outflowValues);
 
 
     // Собираем список расхода товаров по неделям.
@@ -189,14 +134,14 @@ public class PredictionProductServiceImpl implements PredictionProductService {
     }
 
 
-    // Пытаемся собрать список расхода товаров по месяцам. Если недель меньше 4, то список будет пустым.
+    // Собираем список расхода товаров по месяцам.
     // Проход по месяцам
-    for (int i = 1; i <= weekOutflowValues.size() / 4; i++) {
+    for (int i = 0; i < weekOutflowValues.size() / 4; i++) {
       currentOutflowValue = 0;
 
       // Проход по неделям в месяце
       for (int j = 0; j < 4; j++) {
-        currentOutflowValue += outflowValues.get((i-1) * 4 + j);
+        currentOutflowValue += weekOutflowValues.get(i * 4 + j);
       }
 
       monthOutflowValues.add(currentOutflowValue);
@@ -211,7 +156,7 @@ public class PredictionProductServiceImpl implements PredictionProductService {
     if (!monthOutflowValues.isEmpty()) {
       predictionDataDTO.setNextMonthOutflowPrediction(getNextMonthPrediction(monthOutflowValues));
     } else {
-      predictionDataDTO.setNextMonthOutflowPrediction(0);
+      predictionDataDTO.setNextMonthOutflowPrediction(0.0);
     }
 
 
@@ -219,7 +164,7 @@ public class PredictionProductServiceImpl implements PredictionProductService {
   }
 
   @Override
-  public Integer getNextWeekPrediction(List<Integer> weekOutflowValues) {
+  public Double getNextWeekPrediction(List<Integer> weekOutflowValues) {
     int outflowValue;
 
 
@@ -238,11 +183,11 @@ public class PredictionProductServiceImpl implements PredictionProductService {
 
 
     // Проводим округление до целого значения в большую сторону
-    return (int) Math.ceil(forecast);
+    return forecast;
   }
 
   @Override
-  public Integer getNextMonthPrediction(List<Integer> monthOutflowValues) {
+  public Double getNextMonthPrediction(List<Integer> monthOutflowValues) {
     int outflowValue;
 
 
@@ -261,6 +206,6 @@ public class PredictionProductServiceImpl implements PredictionProductService {
 
 
     // Проводим округление до целого значения в большую сторону
-    return (int) Math.ceil(forecast);
+    return forecast;
   }
 }
