@@ -25,6 +25,30 @@ function deleteRecord(button, url) {
 }
 
 
+function compareValues1(x, y) {
+    var numX = parseFloat(x.innerHTML.trim());
+    var numY = parseFloat(y.innerHTML.trim());
+
+    if (!isNaN(numX) && !isNaN(numY)) {
+        return numX > numY;
+    }
+
+    return x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase();
+}
+
+
+function compareValues2(x, y) {
+    var numX = parseFloat(x.innerHTML.trim());
+    var numY = parseFloat(y.innerHTML.trim());
+
+    if (!isNaN(numX) && !isNaN(numY)) {
+        return numX < numY;
+    }
+
+    return x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase();
+}
+
+
 function sortTable(n) {
   var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
 
@@ -42,12 +66,12 @@ function sortTable(n) {
       y = rows[i + 1].getElementsByTagName("TD")[n];
 
       if (dir == "asc") {
-        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+        if (compareValues1(x, y)) {
           shouldSwitch = true;
           break;
         }
       } else if (dir == "desc") {
-        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+        if (compareValues2(x, y)) {
           shouldSwitch = true;
           break;
         }
